@@ -8,7 +8,7 @@ export default function LinkedInProfileCard({
   headline = 'Social Media Marketing Strategist at Rebirth | Personal Branding Expert | Helping professionals build impactful online presence',
   location = 'Mumbai, India',
   connections = '500+',
-  profilePic = '/favicon.svg',
+  profilePic = '/favicon.png',
   coverImage = C3B3,
   mutualConnections = 12,
   className = '',

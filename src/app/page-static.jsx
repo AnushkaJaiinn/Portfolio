@@ -4,7 +4,7 @@ import { Send, User, Mail, MessageSquare } from 'lucide-react';
 import LinkedInCard from '../components/LinkedInCard';
 import profileBackground from '../assets/profile-background.png';
 import mobileBackground from '../assets/mobile-background.png';
-import profilePhoto from '../assets/profile.png';
+// using public favicon image for about/profile
 import SkillPill from '../components/SkillPill';
 import ServiceCard from '../components/ServiceCard';
 import TimelineItem from '../components/TimelineItem';
@@ -104,8 +104,8 @@ export default function HomePage() {
           <h2 className="text-4xl font-bold text-center mb-16 font-serif bg-gradient-to-r from-anushka-800 to-rose-800 bg-clip-text text-transparent">About Me</h2>
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="md:w-1/3">
-              <div className="relative group">
-                <Image src={profilePhoto} alt="Anushka Jain" placeholder="blur" width={320} height={320} className="rounded-full shadow-2xl mx-auto w-80 h-80 object-cover border-4 border-anushka-500/50 relative z-10" />
+                            <div className="relative group">
+                             <Image src="/favicon.png" alt="Anushka Jain" width={320} height={320} className="rounded-full shadow-2xl mx-auto w-80 h-80 object-cover border-4 border-anushka-500/50 relative z-10" />
                 <div className="absolute inset-0 rounded-full bg-anushka-500/20 group-hover:bg-anushka-500/0 transition-all duration-300 scale-105 group-hover:scale-110 border-2 border-anushka-500/50 animate-pulse group-hover:animate-none -z-10"></div>
               </div>
             </div>

@@ -10,7 +10,7 @@ const socialMediaExamples = [
         icon: <Linkedin size={32} />,
         bgColor: "bg-blue-600/80",
         content: "Just helped a startup founder 3x their LinkedIn engagement in 30 days. The secret? Authentic storytelling + strategic consistency. Results speak louder than promises. 💼",
-        profilePic: "/favicon.svg"
+    profilePic: "/favicon.png"
     },
     {
         platform: "Twitter",
@@ -40,7 +40,7 @@ const socialMediaExamples = [
         icon: <Youtube size={32} />,
         bgColor: "bg-red-600/80",
         content: "New video: 'How I Built My Personal Brand from Zero to 6-Figure Business' - sharing the real strategies that actually work. Link in bio! 🎥",
-        profilePic: "/favicon.svg"
+    profilePic: "/favicon.png"
     }
 ];
 
