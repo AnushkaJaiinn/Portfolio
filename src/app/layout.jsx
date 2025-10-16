@@ -8,9 +8,9 @@ export const metadata = {
   title: 'Anushka Jain - Portfolio',
   description: 'Empowering Brands with Expert Marketing Solutions',
   icons: {
-  icon: '/favicon.png',
-  shortcut: '/favicon.png',
-  apple: '/favicon.png',
+  icon: './favicon.png',
+  shortcut: './favicon.png',
+  apple: './favicon.png',
   },
 };
 
