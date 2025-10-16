@@ -105,7 +105,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="md:w-1/3">
                             <div className="relative group">
-                             <Image src="/favicon.png" alt="Anushka Jain" width={320} height={320} className="rounded-full shadow-2xl mx-auto w-80 h-80 object-cover border-4 border-anushka-500/50 relative z-10" />
+                             <Image src="./favicon.png" alt="Anushka Jain" width={320} height={320} className="rounded-full shadow-2xl mx-auto w-80 h-80 object-cover border-4 border-anushka-500/50 relative z-10" />
                 <div className="absolute inset-0 rounded-full bg-anushka-500/20 group-hover:bg-anushka-500/0 transition-all duration-300 scale-105 group-hover:scale-110 border-2 border-anushka-500/50 animate-pulse group-hover:animate-none -z-10"></div>
               </div>
             </div>
