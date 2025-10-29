@@ -7,7 +7,6 @@ import { Send, User, Mail, MessageSquare } from 'lucide-react';
 import LinkedInCard from '../components/LinkedInCard';
 import LinkedInNativeCard from '../components/LinkedInNativeCard';
 import profileBackground from '../assets/profile-background.png';
-import mobileBackground from '../assets/mobile-background.png';
 import SkillPill from '../components/SkillPill';
 import ServiceCard from '../components/ServiceCard';
 import TimelineItem from '../components/TimelineItem';
@@ -74,6 +73,7 @@ export default function HomePage() {
             <section id="home" className="h-screen flex items-center justify-start relative text-white">
                         {/* Optimized hero background with Next/Image for faster, smoother LCP */}
                         <div className="absolute inset-0 -z-10">
+                            {/* Desktop: Professional photo background */}
                             <Image
                                 src={profileBackground}
                                 alt=""
@@ -83,21 +83,17 @@ export default function HomePage() {
                                 fill
                                 className="hidden md:block object-cover object-center"
                             />
-                            <Image
-                                src={mobileBackground}
-                                alt=""
-                                priority
-                                placeholder="blur"
-                                sizes="100vw"
-                                fill
-                                className="block md:hidden object-cover object-center"
-                            />
-                            {/* Mobile-specific smooth radial blur - protects main person area */}
-                            <div className="md:hidden absolute inset-0 backdrop-blur-sm bg-black/5" 
-                                 style={{ 
-                                   maskImage: 'radial-gradient(ellipse 350px 500px at 65% 40%, transparent 55%, black 80%)',
-                                   WebkitMaskImage: 'radial-gradient(ellipse 350px 500px at 65% 40%, transparent 55%, black 80%)'
-                                 }}>
+                            {/* Mobile: Modern gradient background - lighter pink/rose matching profile theme */}
+                            <div className="block md:hidden absolute inset-0 bg-gradient-to-br from-rose-200 via-pink-300 to-rose-300">
+                                {/* Overlay pattern for texture */}
+                                <div className="absolute inset-0 opacity-20" style={{
+                                    backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                                                     radial-gradient(circle at 75% 75%, rgba(255,255,255,0.3) 0%, transparent 50%)`
+                                }}>
+                                </div>
+                                {/* Subtle animated shapes */}
+                                <div className="absolute top-20 left-10 w-32 h-32 bg-white/20 rounded-full blur-2xl animate-pulse"></div>
+                                <div className="absolute bottom-32 right-16 w-40 h-40 bg-rose-400/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
                             </div>
                         </div>
                         {/* Selective background blur for text readability while keeping person image clear */}
@@ -112,12 +108,11 @@ export default function HomePage() {
             >
                 <div className="max-w-2xl text-left">
                     {/* Main Tagline with better contrast and text shadow */}
-                    <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
-                        <span className="bg-gradient-to-r from-anushka-300 via-rose-300 to-anushka-400 bg-clip-text text-transparent font-bold drop-shadow-lg">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 leading-tight">
+                        <span className="block text-white font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] md:bg-gradient-to-r md:from-anushka-300 md:via-rose-300 md:to-anushka-400 md:bg-clip-text md:text-transparent" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}>
                             IMPACTING,
                         </span>
-                        <br />
-                        <span className="text-white font-bold drop-shadow-lg">
+                        <span className="block text-white font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}>
                             NOT INFLUENCING
                         </span>
                     </h1>
@@ -153,9 +148,9 @@ export default function HomePage() {
             </motion.div>
         </section>
 
-    <motion.section id="about" className="py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.2 }}>
+    <motion.section id="about" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.2 }}>
             <div className="container mx-auto px-6 relative">
-                 <h2 className="text-4xl font-bold text-center mb-16 font-serif bg-gradient-to-r from-anushka-800 to-rose-800 bg-clip-text text-transparent">About Me</h2>
+                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16 font-serif bg-gradient-to-r from-anushka-800 to-rose-800 bg-clip-text text-transparent">About Me</h2>
                 <div className="flex flex-col md:flex-row items-center gap-16">
                     <motion.div className="md:w-1/3" initial={reduced ? undefined : { scale: 0.8, opacity: 0 }} whileInView={reduced ? undefined : { scale: 1, opacity: 1 }} viewport={reduced ? undefined : { once: true, amount: 0.5 }} transition={{ duration: reduced ? 0 : 0.8 }}>
                     <div className="relative group">
@@ -180,7 +175,7 @@ export default function HomePage() {
             </div>
         </motion.section>
 
-        <motion.section id="services" className="py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
+        <motion.section id="services" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
             {/* Ambient animated orbs for visual flair */}
                         <motion.div
               aria-hidden
@@ -195,8 +190,8 @@ export default function HomePage() {
                             transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
             />
             <div className="container mx-auto px-6 relative">
-                <h2 className="text-4xl font-bold text-center mb-4 font-serif bg-clip-text text-transparent bg-gradient-to-r from-anushka-600 via-rose-500 to-anushka-700">How I Can Help You Grow</h2>
-                <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Crafted service packages with strategy, content, and growth—no filters, just value.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 md:mb-4 font-serif bg-clip-text text-transparent bg-gradient-to-r from-anushka-600 via-rose-500 to-anushka-700">How I Can Help You Grow</h2>
+                <p className="text-center text-gray-600 mb-8 md:mb-12 max-w-2xl mx-auto">Crafted service packages with strategy, content, and growth—no filters, just value.</p>
                 <motion.div layout className="space-y-12">
                    {services.map((service, index) => (
                         <motion.div
@@ -213,25 +208,21 @@ export default function HomePage() {
             </div>
         </motion.section>
 
-    <motion.section id="portfolio" className="py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
+    <motion.section id="portfolio" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
             <div className="container mx-auto px-6 relative">
-                <h2 className="text-4xl font-bold text-center mb-6 font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">My Impact: Client Success Stories</h2>
-                <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Here's a glimpse into the transformations I've helped my clients achieve. We focus on real metrics and tangible growth.</p>
-                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6 font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">My Impact: Client Success Stories</h2>
+                <p className="text-center text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto">Here's a glimpse into the transformations I've helped my clients achieve. We focus on real metrics and tangible growth.</p>
+                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                    {linkedinClients.map((client, index) => <motion.div variants={fadeInUp} key={index}><LinkedInCard client={client} /></motion.div>)}
                 </motion.div>
-                
-                                                {/* Social media section heading (personal profiles) */}
-                                <motion.h3
-                                    variants={fadeInUp}
-                                    initial={reduced ? undefined : 'hidden'}
-                                    whileInView={reduced ? undefined : 'visible'}
-                                    viewport={reduced ? undefined : { once: true, amount: 0.1 }}
-                                    className="text-3xl font-bold text-center mt-4 mb-2 font-serif bg-clip-text text-transparent bg-gradient-to-r from-anushka-600 via-rose-500 to-anushka-700"
-                                >
-                                                    My Social Profiles
-                                </motion.h3>
-                 <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </motion.section>
+
+        <motion.section id="social-profiles" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
+            <div className="container mx-auto px-6 relative">
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6 font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">My Social Profiles</h2>
+                <p className="text-center text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto">Connect with me across different platforms and stay updated with my latest content and insights.</p>
+                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Modern Social Profile Cards */}
                     <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
                         <LinkedInNativeCard profile={anushkaProfile} />
@@ -250,9 +241,9 @@ export default function HomePage() {
             </div>
         </motion.section>
 
-    <motion.section id="journey" className="py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
+    <motion.section id="journey" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
             <div className="container mx-auto px-6 relative">
-                <h2 className="text-4xl font-bold text-center mb-16 font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">My Professional Journey</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16 font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">My Professional Journey</h2>
                 <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="max-w-5xl mx-auto space-y-8 md:space-y-12">
                     {journey.map((item, index) => (
                         <motion.div variants={fadeInUp} key={index}>
@@ -265,9 +256,9 @@ export default function HomePage() {
         
         <TestimonialsSection />
 
-        <motion.section id="contact" className="py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
+        <motion.section id="contact" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
                         <div className="container mx-auto px-6 max-w-3xl relative">
-                                <h2 className="text-4xl font-bold mb-3 text-center font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">Let's Create Impact Together</h2>
+                                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-center font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">Let's Create Impact Together</h2>
                                 <p className="text-gray-700 mb-10 text-center">Tell me what you're exploring—strategy, content, or growth. I read every message.</p>
                                 {/* Glass card with gradient border */}
                                 <motion.div

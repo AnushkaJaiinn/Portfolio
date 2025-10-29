@@ -73,6 +73,12 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Scroll offset to account for fixed navbar */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Height of navbar + some padding */
+  }
 }
 
 /* Responsive hero background images */
