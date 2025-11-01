@@ -92,7 +92,7 @@ export default function HomePage() {
             
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <a href="#about" className="bg-gradient-to-r from-anushka-500 to-rose-500 hover:from-anushka-600 hover:to-rose-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl transform hover:scale-105 border border-white/20 hover:shadow-anushka-500/60 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]">Know More</a>
-              <a href="https://topmate.io/anushka13/1524690" target="_blank" rel="noopener noreferrer" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl transform hover:scale-105 border border-white/40 hover:shadow-white/40 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] hover:border-white/80">Book 1:1 Call</a>
+              <a href="https://topmate.io/anushka_jain10/1307274" target="_blank" rel="noopener noreferrer" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl transform hover:scale-105 border border-white/40 hover:shadow-white/40 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] hover:border-white/80">Book 1:1 Call</a>
             </div>
           </div>
         </div>

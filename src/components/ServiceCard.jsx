@@ -99,7 +99,7 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
                   className="relative overflow-hidden"
                 >
                   <a 
-                    href="https://topmate.io/anushka13/1524690" 
+                    href="https://topmate.io/anushka_jain10/1307274" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-block bg-gradient-to-r from-anushka-500 via-rose-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
