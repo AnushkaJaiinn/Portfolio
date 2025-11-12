@@ -12,6 +12,22 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
   const rotateX = useTransform(y, [-50, 50], [8, -8])
   const rotateY = useTransform(x, [-50, 50], [-8, 8])
 
+  // Custom smooth scroll function to prevent double-scroll
+  const handleSmoothScroll = (e, targetId) => {
+    e.preventDefault();
+    
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+      
+      // Update URL hash without triggering scroll
+      window.history.pushState(null, '', `#${targetId}`);
+    }
+  }
+
   const highlightMap = {
     'Brand Building': [
       'Profile optimization',
@@ -116,6 +132,7 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
                 >
                   <a 
                     href="#contact"
+                    onClick={(e) => handleSmoothScroll(e, 'contact')}
                     className="inline-block border-2 bg-gradient-to-r from-anushka-50 to-rose-50 text-anushka-700 font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group hover:bg-gradient-to-r hover:from-anushka-500 hover:to-rose-500 hover:text-white"
                     style={{
                       borderImage: 'linear-gradient(to right, rgb(236, 72, 153), rgb(244, 63, 94)) 1'

@@ -1,7 +1,7 @@
 import './globals.css';
 import Navigation from '../components/Navigation';
 import ScrollProgressBar from '../components/ScrollProgressBar';
-
+import HashScrollHandler from '../components/HashScrollHandler';
 import Footer from '../components/Footer';
 
 export const metadata = {
@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-gray-900 text-white font-sans leading-normal tracking-tight overflow-x-hidden">
+        <HashScrollHandler />
         <ScrollProgressBar />
         <Navigation />
         <main className="flex flex-col gap-20">

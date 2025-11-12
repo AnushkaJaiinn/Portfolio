@@ -39,6 +39,22 @@ export default function HomePage() {
             setUrgency('Soon');
             setMessage('');
         };
+
+        // Custom smooth scroll function to prevent double-scroll
+        const handleSmoothScroll = (e, targetId) => {
+            e.preventDefault();
+            
+            const element = document.getElementById(targetId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Update URL hash without triggering scroll
+                window.history.pushState(null, '', `#${targetId}`);
+            }
+        };
         
         // Make reset function globally available
         React.useEffect(() => {
@@ -179,6 +195,7 @@ export default function HomePage() {
                         >
                             <motion.a 
                                 href="#contact"
+                                onClick={(e) => handleSmoothScroll(e, 'contact')}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
                                 initial={reduced ? undefined : { opacity: 0, y: 20 }}
