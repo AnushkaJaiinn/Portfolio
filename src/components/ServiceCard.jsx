@@ -99,12 +99,12 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
                   className="relative overflow-hidden"
                 >
                   <a 
-                    href="https://topmate.io/anushka_jain10/1307274" 
+                    href="https://calendly.com/anushkawork200022" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-block bg-gradient-to-r from-anushka-500 via-rose-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                   >
-                    <span className="relative z-10">Book 1:1 Call</span>
+                    <span className="relative z-10">Book a Call</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-anushka-600 via-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </a>

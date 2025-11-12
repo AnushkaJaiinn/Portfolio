@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Send, User, Mail, MessageSquare } from 'lucide-react';
 import LinkedInCard from '../components/LinkedInCard';
 import LinkedInNativeCard from '../components/LinkedInNativeCard';
-import profileBackground from '../assets/profile-background.png';
+import profileBackground from '../assets/new-profile-backgroud.jpg';
 import SkillPill from '../components/SkillPill';
 import ServiceCard from '../components/ServiceCard';
 import TimelineItem from '../components/TimelineItem';
@@ -100,51 +100,112 @@ export default function HomePage() {
                         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent md:from-black/60 md:via-black/30 md:to-transparent"></div>
                         
             <motion.div 
-                className="relative z-10 container mx-auto px-6"
+                className="relative z-10 container mx-auto px-6 flex items-center min-h-[inherit]"
                 style={{ willChange: 'transform, opacity' }}
                 initial={reduced ? undefined : { opacity: 0, x: -50 }}
                 animate={reduced ? undefined : { opacity: 1, x: 0 }}
                 transition={{ duration: reduced ? 0 : 1 }}
             >
-                <div className="max-w-2xl text-left">
-                    {/* Main Tagline with better contrast and text shadow */}
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 leading-tight">
-                        <span className="block text-white font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] md:bg-gradient-to-r md:from-anushka-300 md:via-rose-300 md:to-anushka-400 md:bg-clip-text md:text-transparent" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}>
-                            IMPACTING,
+                {/* Left side: Text content - Constrained to ~55% on desktop, full width on mobile */}
+                <div className="w-full md:max-w-[55%] lg:max-w-[50%] space-y-8">
+                    {/* Main Headline with Stagger Animation */}
+                    <motion.h1 
+                        className="text-[2.5rem] leading-tight font-semibold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] text-left"
+                        style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}
+                        initial={reduced ? undefined : { opacity: 0, y: 30 }}
+                        animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                        transition={{ duration: reduced ? 0 : 0.8, delay: 0.2 }}
+                    >
+                        Helping people{' '}
+                        <span className="bg-gradient-to-r from-anushka-300 via-rose-300 to-pink-300 bg-clip-text text-transparent font-bold">
+                            reinvent themselves
                         </span>
-                        <span className="block text-white font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}>
-                            NOT INFLUENCING
+                        , and express their power online through{' '}
+                        <span className="bg-gradient-to-r from-anushka-300 via-rose-300 to-pink-300 bg-clip-text text-transparent font-bold">
+                            authentic storytelling
                         </span>
-                    </h1>
-                    <div className="text-xl md:text-2xl text-gray-100 mb-8 font-medium drop-shadow-lg space-y-3" style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.8)' }}>
-                        <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <div className="w-8 h-8 bg-gradient-to-br from-anushka-400 to-rose-500 rounded-lg rotate-45 shadow-lg"></div>
-                                <div className="absolute inset-0 w-8 h-8 bg-gradient-to-tl from-transparent via-white/30 to-transparent rounded-lg rotate-45 animate-pulse"></div>
-                            </div>
-                            <p>Strategic Marketing Professional</p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <div className="w-0 h-0 border-l-[16px] border-r-[16px] border-b-[24px] border-l-transparent border-r-transparent border-b-gradient-to-r border-b-rose-500 filter drop-shadow-lg"></div>
-                                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[18px] border-l-transparent border-r-transparent border-b-anushka-400 animate-pulse"></div>
-                            </div>
-                            <p>Brand Storyteller</p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <div className="w-8 h-8 bg-gradient-to-r from-anushka-500 to-rose-500 transform rotate-12 shadow-lg" style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }}></div>
-                                <div className="absolute inset-0 w-8 h-8 bg-white/30 transform rotate-12 animate-pulse" style={{ clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }}></div>
-                            </div>
-                            <p>Growth Catalyst</p>
-                        </div>
-                    </div>
+                        .
+                    </motion.h1>
                     
-                    <div className="flex flex-col sm:flex-row items-start gap-4">
-                        <a href="#about" className="bg-gradient-to-r from-anushka-500 to-rose-500 hover:from-anushka-600 hover:to-rose-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl transform hover:scale-105 border border-white/20 hover:shadow-anushka-500/60 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]">Know More</a>
-                        <a href="https://topmate.io/anushka_jain10/1307274" target="_blank" rel="noopener noreferrer" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl transform hover:scale-105 border border-white/40 hover:shadow-white/40 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] hover:border-white/80">Book 1:1 Call</a>
+                    {/* Services and CTA Grid: Side-by-side on desktop, stacked on mobile */}
+                    <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
+                        {/* Left: Three Services Cards - Vertical Stack */}
+                        <motion.div 
+                            className="flex flex-col gap-3"
+                            initial={reduced ? undefined : { opacity: 0, x: -30 }}
+                            animate={reduced ? undefined : { opacity: 1, x: 0 }}
+                            transition={{ duration: reduced ? 0 : 0.6, delay: 0.4 }}
+                        >
+                            <motion.div
+                                whileHover={{ scale: 1.05, x: 5 }}
+                                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                                animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                transition={{ duration: reduced ? 0 : 0.5, delay: 0.5 }}
+                                className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-5 py-3 rounded-xl shadow-lg border border-white/20 hover:bg-white/20 hover:shadow-xl hover:border-white/30 transition-all duration-300"
+                            >
+                                <span className="text-2xl">✨</span>
+                                <span className="text-white font-semibold text-sm md:text-base">Personal Branding Design</span>
+                            </motion.div>
+                            
+                            <motion.div
+                                whileHover={{ scale: 1.05, x: 5 }}
+                                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                                animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                transition={{ duration: reduced ? 0 : 0.5, delay: 0.6 }}
+                                className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-5 py-3 rounded-xl shadow-lg border border-white/20 hover:bg-white/20 hover:shadow-xl hover:border-white/30 transition-all duration-300"
+                            >
+                                <span className="text-2xl">💬</span>
+                                <span className="text-white font-semibold text-sm md:text-base">Social Media Storytelling</span>
+                            </motion.div>
+                            
+                            <motion.div
+                                whileHover={{ scale: 1.05, x: 5 }}
+                                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                                animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                transition={{ duration: reduced ? 0 : 0.5, delay: 0.7 }}
+                                className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-5 py-3 rounded-xl shadow-lg border border-white/20 hover:bg-white/20 hover:shadow-xl hover:border-white/30 transition-all duration-300"
+                            >
+                                <span className="text-2xl">🎨</span>
+                                <span className="text-white font-semibold text-sm md:text-base">Creative Visual Identity</span>
+                            </motion.div>
+                        </motion.div>
+                        
+                        {/* Right: Two CTA Buttons - Vertical Stack */}
+                        <motion.div 
+                            className="flex flex-col gap-4"
+                            initial={reduced ? undefined : { opacity: 0, x: 30 }}
+                            animate={reduced ? undefined : { opacity: 1, x: 0 }}
+                            transition={{ duration: reduced ? 0 : 0.6, delay: 0.6 }}
+                        >
+                            <motion.a 
+                                href="#contact"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.98 }}
+                                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                                animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                transition={{ duration: reduced ? 0 : 0.5, delay: 0.7 }}
+                                className="bg-gradient-to-r from-anushka-500 to-rose-500 hover:from-anushka-600 hover:to-rose-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl border border-white/20 hover:shadow-anushka-500/60 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(236,72,153,0.8)] text-center"
+                            >
+                                1:1 Consultation
+                            </motion.a>
+                            
+                            <motion.a 
+                                href="https://calendly.com/anushkawork200022" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.98 }}
+                                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                                animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                                transition={{ duration: reduced ? 0 : 0.5, delay: 0.8 }}
+                                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 ease-in-out shadow-xl border border-white/40 hover:shadow-white/40 hover:shadow-2xl hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] hover:border-white/80 text-center"
+                            >
+                                Book a Call
+                            </motion.a>
+                        </motion.div>
                     </div>
                 </div>
+                {/* Right side: Reserved for background image (visible through transparent area) */}
             </motion.div>
         </section>
 
