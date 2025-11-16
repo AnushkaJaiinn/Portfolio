@@ -77,7 +77,7 @@
   /* Scroll offset to account for fixed navbar */
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Height of navbar + some padding */
+    scroll-padding-top: 90px; /* Height of navbar + padding - matches scroll-mt-24 */
   }
 }
 

@@ -300,17 +300,40 @@ export default function HomePage() {
             <div className="container mx-auto px-6 relative">
                 <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 md:mb-6 font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">My Social Profiles</h2>
                 <p className="text-center text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto">Connect with me across different platforms and stay updated with my latest content and insights.</p>
-                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Modern Social Profile Cards */}
-                    <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
+                {/* Centered container for LinkedIn card with fixed 450px width */}
+                <div className="flex justify-center w-full">
+                    <motion.div 
+                        variants={fadeInUp}
+                        initial="hidden" 
+                        whileInView="visible" 
+                        viewport={{ once: true, amount: 0.1 }}
+                        className="w-[450px]"
+                    >
                         <LinkedInNativeCard profile={anushkaProfile} />
                     </motion.div>
+                </div>
+
+                {/* Hidden cards - preserved for future use */}
+                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="hidden">
+                    {/* Placeholder to maintain animation structure */}
                     <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
-                        <YouTubeProfileCard />
+                        {/* LinkedIn card moved above */}
                     </motion.div>
-                    <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
-                        <InstagramProfileCard />
-                    </motion.div>
+                    
+                    {/* YouTube card - Hidden but code preserved for future use */}
+                    {false && (
+                        <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
+                            <YouTubeProfileCard />
+                        </motion.div>
+                    )}
+                    
+                    {/* Instagram card - Hidden but code preserved for future use */}
+                    {false && (
+                        <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
+                            <InstagramProfileCard />
+                        </motion.div>
+                    )}
+                    
                     {/* Twitter card hidden for now */}
                     {/* <motion.div variants={fadeInUp} className="flex justify-center h-[550px]">
                         <TwitterProfileCard />
@@ -334,7 +357,7 @@ export default function HomePage() {
         
         <TestimonialsSection />
 
-        <motion.section id="contact" className="py-10 md:py-20 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
+        <motion.section id="contact" className="min-h-[140vh] pt-24 pb-[300px] scroll-mt-24 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream relative overflow-hidden" style={{backgroundImage: `linear-gradient(rgba(253, 242, 248, 0.9), rgba(254, 247, 240, 0.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ec4899' fill-opacity='0.05'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E")`, contentVisibility: 'auto'}} variants={fadeInUp} initial={reduced ? undefined : 'hidden'} whileInView={reduced ? undefined : 'visible'} viewport={reduced ? undefined : { once: true, amount: 0.1 }}>
                         <div className="container mx-auto px-6 max-w-3xl relative">
                                 <h2 className="text-3xl md:text-4xl font-bold mb-3 text-center font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent">Let's Create Impact Together</h2>
                                 <p className="text-gray-700 mb-10 text-center">Tell me what you're exploring—strategy, content, or growth. I read every message.</p>

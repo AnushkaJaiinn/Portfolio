@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { MoreHorizontal, Eye, MessageSquare } from 'lucide-react';
 
 const LinkedInNativeCard = ({ profile }) => (
-  <Card className="bg-white text-gray-800 overflow-hidden transform transition-transform duration-300 hover:scale-105">
+  <Card className="bg-white text-gray-800 overflow-hidden transform transition-transform duration-300 hover:scale-105 border border-neutral-300">
     <div className="relative">
       <div className="relative w-full aspect-[804/201] overflow-hidden">
         <Image src={profile.bannerUrl} alt={`${profile.name}'s Banner`} layout="fill" objectFit="cover" />
@@ -14,7 +14,24 @@ const LinkedInNativeCard = ({ profile }) => (
       </div>
     </div>
     <CardHeader className="pt-12">
-      <CardTitle>{profile.name}</CardTitle>
+      <CardTitle className="inline-flex items-center gap-1.5">
+        <span>{profile.name}</span>
+        {/* LinkedIn Premium Badge */}
+        <svg 
+          width="16" 
+          height="16" 
+          viewBox="0 0 16 16" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          className="inline-block"
+        >
+          <rect width="16" height="16" rx="2" fill="#E6B800"/>
+          <path 
+            d="M8 3.5L9.5 6.5H12.5L10 8.5L11 11.5L8 9.5L5 11.5L6 8.5L3.5 6.5H6.5L8 3.5Z" 
+            fill="white"
+          />
+        </svg>
+      </CardTitle>
       <CardDescription className="h-[1.875rem]">{profile.bio}</CardDescription>
     </CardHeader>
     <CardContent>

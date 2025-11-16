@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 
 export const metadata = {
   title: 'Anushka Jain - Portfolio',
-  description: 'Empowering Brands with Expert Marketing Solutions',
+  description: 'Your Next Chapter Starts Here.',
   icons: {
   icon: './favicon.png',
   shortcut: './favicon.png',
@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         <HashScrollHandler />
         <ScrollProgressBar />
         <Navigation />
-        <main className="flex flex-col gap-20">
+        <main className="flex flex-col gap-20 pb-[300px]">
           {children}
         </main>
         <Footer />
