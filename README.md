@@ -1,49 +1,33 @@
-# Anushka Jain Portfolio
+# Rebirth by Anushka Jain (Version 2.0)
 
-A modern, professional portfolio website showcasing LinkedIn marketing expertise, personal branding services, and client success stories. Built with Next.js 14, featuring authentic social media profile cards and interactive client analytics.
+A premium, single-offer authority website designed to position Anushka Jain as a thought leader in personal branding. This project represents the evolution from a standard portfolio (Version 1.0) to a high-converting, narrative-driven experience (Version 2.0).
 
-## 🌟 Key Features
+## 🌟 Version 2.0: The Rebirth Transformation
 
-### 🎯 Client Success Stories
-- **LinkedIn Client Cards**: Interactive before/after analytics showing real growth metrics
-- **Visual Results**: Compelling comparison layouts with view count improvements
-- **Case Studies**: Detailed client transformations with professional testimonials
+This version shifts focus from "freelance services" to a comprehensive transformation program called **Rebirth**.
 
-### 📱 Native Social Media Profiles
-- **LinkedIn Profile Card**: Authentic LinkedIn interface with real follower count and mutual connections
-- **YouTube Channel Card**: Native YouTube design with subscriber stats and recent videos
-- **Instagram Profile Card**: Instagram-style interface with gradient rings and story highlights
-- **Real-time Links**: Direct integration with actual social media profiles
-
-### 🎨 Modern Design & UX
-- **Responsive Grid Layout**: Adaptive cards that work perfectly on all screen sizes
-- **Framer Motion Animations**: Smooth, professional animations throughout
-- **Consistent Spacing**: 2-line reserved layouts for bio and description sections
-- **Interactive Elements**: Hover effects and seamless navigation
-
-### 🔗 Social Media Integration
-- **External Links**: Direct connections to LinkedIn, YouTube, Instagram profiles
-- **Footer Integration**: Complete social media presence with YouTube icon
-- **Professional Networking**: LinkedIn mutual connections and follower displays
+### Key Features
+- **Conversational Application Flow**: Replaced standard contact forms with `RebirthApplication`—a guided, 5-step conversational interface that qualifies leads and builds connection. includes Google Sheets integration.
+- **Single-Offer Positioning**: All content is streamlined to promote one core offer: *Rebirth*.
+- **Outcome-Driven Narrative**: Copy focuses on "Identity", "Narrative", and "Legacy" rather than tactical deliverables.
+- **Premium UX**: Framer Motion animations, glassmorphism effects, and a grounded, confident design system.
+- **Strategic Cleanup**: Removed multi-service clutter, social media aggregators, and resume-style lists.
 
 ## 🛠️ Tech Stack
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS + Custom Design System
+- **Animation**: Framer Motion components (`RebirthApplication`, `TimelineItem`, `ServiceCard`)
+- **Icons**: Lucide React
+- **Data**: Google Apps Script integration for application submissions
 
-- **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS with custom design system
-- **Animations**: Framer Motion for smooth interactions
-- **Icons**: Lucide React for consistent iconography
-- **Images**: Next.js Image optimization with local assets
-- **Deployment**: GitHub Pages with static site generation
+## 📦 Recent Updates (Phase 1-3)
+1.  **Phase 1 (Structure)**: Restructured Hero and Navigation for single-offer focus.
+2.  **Phase 2 (Content)**: Refined all copy to be grounded, calm, and selective. Repurposed `ServiceCard` for program pillars.
+3.  **Phase 3 (Experience)**: Implemented the `RebirthApplication` conversational flow.
 
-## 📦 Installation & Setup
+## 🚀 Running Locally
 
 ```bash
-# Clone the repository
-git clone https://github.com/JaibhagwanJindal/anushka-jain-portfolio-Copy.git
-
-# Navigate to project directory
-cd anushka-jain-portfolio-Copy
-
 # Install dependencies
 npm install
 
@@ -51,91 +35,8 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio in development mode.
-
-## 🚀 Build & Deploy
-
-```bash
-# Create production build
-npm run build
-
-# Export static files for GitHub Pages
-npm run export
-
-# Serve production build locally (optional)
-npm start
-```
-
-## 📁 Project Structure
-
-```
-src/
-├── components/
-│   ├── LinkedInCard.jsx          # Client success story cards
-│   ├── LinkedInNativeCard.jsx    # Anushka's LinkedIn profile
-│   ├── YouTubeProfileCard.jsx    # YouTube channel card
-│   ├── InstagramProfileCard.jsx  # Instagram profile card
-│   ├── Footer.jsx                # Social media footer
-│   └── ui/                       # Reusable UI components
-├── assets/                       # Images and media files
-├── app/
-│   ├── page.jsx                  # Main portfolio page
-│   ├── layout.jsx                # Root layout
-│   └── globals.css               # Global styles
-├── linkedinClients.jsx           # Client data and success metrics
-└── anushkaProfile.jsx            # Personal profile information
-```
-
-## � Features Breakdown
-
-### LinkedIn Client Cards
-- Real client success stories with anonymized data
-- Before/after analytics with visual comparisons
-- Professional growth metrics and engagement stats
-- Responsive card layout with consistent spacing
-
-### Social Media Profile Cards
-- **LinkedIn**: Native interface with followers, mutual connections, and recent activity
-- **YouTube**: Channel layout with subscriber count, video previews, and community features  
-- **Instagram**: Story highlights, gradient profile rings, and follower connections
-- **Authentic Design**: Each card perfectly mimics the native platform interface
-
-### Interactive Elements
-- Smooth hover animations and transitions
-- Responsive grid layouts (1-2-3-4 columns based on screen size)
-- External link integration with proper security attributes
-- Optimized image loading with Next.js Image component
-
-## 🌐 Live Portfolio
-
-Visit the live portfolio: [https://jaibhagwanjindal.github.io/anushka-jain-portfolio-Copy/](https://jaibhagwanjindal.github.io/anushka-jain-portfolio-Copy/)
-
-## 🔗 Social Media Links
-
-- **LinkedIn**: [Anushka Jain](https://www.linkedin.com/in/anushka-jain-408b81211/)
-- **YouTube**: [Realwithjain](https://www.youtube.com/@realwithjain)
-- **Instagram**: [@anushkajaiinn](https://instagram.com/anushkajaiinn/)
-
-## 📝 Development Notes
-
-### Recent Updates (Latest Commit)
-- Enhanced LinkedIn client success story cards with analytics
-- Implemented native social media profile interfaces
-- Added responsive grid layout for social media section
-- Updated footer with comprehensive social media integration
-- Optimized spacing and typography for professional appearance
-- Added real profile images and authentic platform styling
-
-### Performance Optimizations
-- Static site generation for fast loading
-- Optimized images with Next.js Image component
-- Efficient CSS with Tailwind's utility-first approach
-- Minimal JavaScript bundles with tree shaking
-
-## 📄 License
-
-This project is created for portfolio demonstration purposes. All rights reserved.
+Visit [http://localhost:3000](http://localhost:3000) to view the Rebirth experience.
 
 ---
 
-**Built with ❤️ by [Jaibhagwan Jindal](https://github.com/jaibhagwanjindal) for [Anushka Jain](https://www.linkedin.com/in/anushka-jain-408b81211/)**
+**Version 1.0 Snapshot**: A backup of the original portfolio is archived in `Version_1.0_Portfolio/`.
