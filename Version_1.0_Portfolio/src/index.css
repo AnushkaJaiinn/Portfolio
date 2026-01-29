@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Mobile hero background override */
+@media (max-width: 767px) {
+	.hero-bg {
+		background-image: url('./assets/mobile-background.png') !important;
+		background-size: cover !important;
+		background-position: center !important;
+	}
+}

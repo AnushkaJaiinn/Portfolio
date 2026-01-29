@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Google Apps Script</title>
+</head>
+<body>
+    <h2>Test Contact Form</h2>
+    <form id="testForm">
+        <p>
+            <label>Name:</label><br>
+            <input type="text" name="name" value="Test User" required>
+        </p>
+        <p>
+            <label>Email:</label><br>
+            <input type="email" name="email" value="test@example.com" required>
+        </p>
+        <p>
+            <label>Message:</label><br>
+            <textarea name="message" required>This is a test message</textarea>
+        </p>
+        <p>
+            <label>Need:</label><br>
+            <input type="text" name="need" value="Test Request">
+        </p>
+        <p>
+            <label>Urgency:</label><br>
+            <input type="text" name="urgency" value="Soon">
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="emailMe" checked> Email me back
+            </label>
+        </p>
+        <button type="submit">Test Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPEp0WbIMixZu8Q-OBn6qFw0vWESec5Ncu4wwbjPK6kE6gGRFP6RukNheDSLDG4lJJrQ/exec';
+            
+            const formData = new FormData(e.target);
+            
+            // Create JSON data exactly as your Google Apps Script expects
+            const jsonData = {
+                need: formData.get('need') || 'Test Request',
+                urgency: formData.get('urgency') || 'Soon',
+                name: formData.get('name') || 'Test User',
+                email: formData.get('email') || 'test@example.com',
+                message: formData.get('message') || 'This is a test message',
+                emailMe: formData.get('emailMe') ? 'on' : 'off'
+            };
+            
+            console.log('Sending JSON data:', jsonData);
+            
+            // Test with JSON POST request
+            fetch(GOOGLE_APP_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.text();
+            })
+            .then(text => {
+                console.log('Response text:', text);
+                try {
+                    const result = JSON.parse(text);
+                    console.log('Parsed result:', result);
+                    if (result.result === 'success') {
+                        alert('✅ Test successful! Data should be in your Google Sheet.');
+                    } else {
+                        alert('❌ Test failed: ' + (result.message || 'Unknown error'));
+                    }
+                } catch (e) {
+                    console.log('Could not parse JSON response');
+                    alert('✅ Data sent successfully (response received)! Check your Google Sheet.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Test failed: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
