@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -12,6 +12,8 @@ import SkillPill from '../components/SkillPill';
 import ServiceCard from '../components/ServiceCard';
 import TimelineItem from '../components/TimelineItem';
 import TestimonialsSection from '../components/TestimonialsSection';
+import InstagramProfileCard from '../components/InstagramProfileCard';
+import YouTubeProfileCard from '../components/YouTubeProfileCard';
 
 import coreSkills from '../skills.jsx';
 import services from '../services.jsx';
