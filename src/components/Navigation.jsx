@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const navLinks = ['home', 'about', 'services', 'portfolio', 'social-profiles', 'journey', 'testimonial', 'contact'];
+const navLinks = ['home', 'about', 'transformation', 'results', 'story', 'testimonial', 'contact'];
 
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
@@ -11,18 +11,18 @@ export default function Navigation() {
   // Custom smooth scroll function to prevent double-scroll
   const handleSmoothScroll = (e, targetId) => {
     e.preventDefault();
-    
+
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
-      
+
       // Update URL hash without triggering scroll
       window.history.pushState(null, '', `#${targetId}`);
     }
-    
+
     // Close mobile menu if open
     setMenuOpen(false);
   };
@@ -62,24 +62,24 @@ export default function Navigation() {
     <>
       <header className="fixed top-0 left-0 w-full z-[100] bg-anushka-50/95 backdrop-blur-lg shadow-md border-b border-anushka-200/30">
         <nav className="container mx-auto px-4 sm:px-6 py-3 md:py-4 flex justify-between items-center">
-          <a 
-            href="#home" 
+          <a
+            href="#home"
             onClick={(e) => handleSmoothScroll(e, 'home')}
             className="text-3xl font-bold font-serif bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent"
           >
-            Anushka Jain
+            Rebirth
           </a>
 
           {/* Desktop nav */}
           <ul className="hidden md:flex items-center space-x-8">
             {navLinks.map(link => (
               <li key={link}>
-                <a 
+                <a
                   href={`#${link}`}
                   onClick={(e) => handleSmoothScroll(e, link)}
                   className={`capitalize pb-1 border-b-2 transition-colors duration-300 font-medium ${activeSection === link ? 'border-anushka-500 text-anushka-600' : 'border-transparent text-gray-700 hover:border-anushka-400 hover:text-anushka-600'}`}
                 >
-                  {link === 'social-profiles' ? 'Social' : link}
+                  {link === 'transformation' ? 'The Program' : link === 'results' ? 'Results' : link === 'story' ? 'Story' : link === 'contact' ? 'Apply' : link}
                 </a>
               </li>
             ))}
@@ -103,7 +103,7 @@ export default function Navigation() {
       {menuOpen && (
         <div className="md:hidden fixed inset-0 z-[120] bg-black/50" onClick={() => setMenuOpen(false)}>
           {/* Menu Panel */}
-          <div 
+          <div
             className="fixed left-0 top-0 bottom-0 w-[280px] bg-white shadow-2xl overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -111,7 +111,7 @@ export default function Navigation() {
             <div className="bg-gradient-to-r from-anushka-500 to-rose-500 p-6 text-white">
               <h2 className="text-2xl font-bold">Menu</h2>
             </div>
-            
+
             {/* Menu Items */}
             <ul className="p-4">
               {navLinks.map(link => (
@@ -119,13 +119,12 @@ export default function Navigation() {
                   <a
                     href={`#${link}`}
                     onClick={(e) => handleSmoothScroll(e, link)}
-                    className={`block py-3 px-4 mb-2 capitalize rounded-lg font-medium transition-colors ${
-                      activeSection === link 
-                        ? 'bg-anushka-500 text-white' 
-                        : 'text-gray-700 hover:bg-anushka-100'
-                    }`}
+                    className={`block py-3 px-4 mb-2 capitalize rounded-lg font-medium transition-colors ${activeSection === link
+                      ? 'bg-anushka-500 text-white'
+                      : 'text-gray-700 hover:bg-anushka-100'
+                      }`}
                   >
-                    {link === 'social-profiles' ? 'Social' : link}
+                    {link === 'transformation' ? 'The Program' : link === 'results' ? 'Results' : link === 'story' ? 'Story' : link === 'contact' ? 'Apply' : link}
                   </a>
                 </li>
               ))}

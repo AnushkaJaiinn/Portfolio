@@ -5,12 +5,12 @@ import HashScrollHandler from '../components/HashScrollHandler';
 import Footer from '../components/Footer';
 
 export const metadata = {
-  title: 'Anushka Jain - Portfolio',
-  description: 'Your Next Chapter Starts Here.',
+  title: 'Rebirth | Personal Brand Accelerator for Women',
+  description: 'A personal brand accelerator for women ready to step into their power, build authority, and attract opportunities that align with who they truly are.',
   icons: {
-  icon: './favicon.png',
-  shortcut: './favicon.png',
-  apple: './favicon.png',
+    icon: './favicon.png',
+    shortcut: './favicon.png',
+    apple: './favicon.png',
   },
 };
 

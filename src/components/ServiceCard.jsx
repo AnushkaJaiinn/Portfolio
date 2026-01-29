@@ -15,34 +15,34 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
   // Custom smooth scroll function to prevent double-scroll
   const handleSmoothScroll = (e, targetId) => {
     e.preventDefault();
-    
+
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
-      
+
       // Update URL hash without triggering scroll
       window.history.pushState(null, '', `#${targetId}`);
     }
   }
 
   const highlightMap = {
-    'Brand Building': [
-      'Profile optimization',
-      'Narrative & positioning',
-      'Consistency system',
+    'Foundation': [
+      'Brand Archetype',
+      'Visual Identity',
+      'Core Offering',
     ],
-    'Lead Generation': [
-      'Inbound hooks & CTAs',
-      'DM funnel structure',
-      'Offer clarity',
+    'Expression': [
+      'Content Strategy',
+      'Thought Leadership',
+      'Voice & Tone',
     ],
-    'Strategy': [
-      'Audit & roadmap',
-      'Content calendar',
-      'KPIs & measurement',
+    'Expansion': [
+      'Network Growth',
+      'Opportunity Flow',
+      'Authority Assets',
     ],
   }
 
@@ -74,7 +74,7 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
       whileHover={{ scale: 1.01 }}
       transition={{ type: 'spring', stiffness: 250, damping: 20 }}
     >
-      <Card className={`bg-white/80 backdrop-blur-sm border-anushka-200 overflow-hidden transition-shadow duration-300 hover:shadow-xl hover:shadow-anushka-500/10 will-change-transform transform-gpu`}> 
+      <Card className={`bg-white/80 backdrop-blur-sm border-anushka-200 overflow-hidden transition-shadow duration-300 hover:shadow-xl hover:shadow-anushka-500/10 will-change-transform transform-gpu`}>
         <CardContent className="p-0 md:p-0">
           <div className={`flex flex-col md:flex-row items-stretch md:items-center gap-6 md:gap-10`}>
             {/* Visual side */}
@@ -114,32 +114,13 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
                   whileTap={{ scale: 0.95 }}
                   className="relative overflow-hidden"
                 >
-                  <a 
-                    href="https://calendly.com/anushkawork200022" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-block bg-gradient-to-r from-anushka-500 via-rose-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
-                  >
-                    <span className="relative z-10">Book a Call</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-anushka-600 via-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  </a>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden"
-                >
-                  <a 
+                  <a
                     href="#contact"
                     onClick={(e) => handleSmoothScroll(e, 'contact')}
-                    className="inline-block border-2 bg-gradient-to-r from-anushka-50 to-rose-50 text-anushka-700 font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group hover:bg-gradient-to-r hover:from-anushka-500 hover:to-rose-500 hover:text-white"
-                    style={{
-                      borderImage: 'linear-gradient(to right, rgb(236, 72, 153), rgb(244, 63, 94)) 1'
-                    }}
+                    className="inline-block bg-gradient-to-r from-anushka-500 via-rose-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                   >
-                    <span className="relative z-10">Enquire</span>
-                    <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                    <span className="relative z-10">Apply for Rebirth</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-anushka-600 via-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </a>
                 </motion.div>
               </div>

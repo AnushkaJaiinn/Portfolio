@@ -1,8 +1,8 @@
 const coreSkills = [
-  "LinkedIn Strategy & Management",
-  "Content Creation & Ghostwriting",
-  "Personal Branding & Storytelling",
-  "Audience Engagement & Growth",
+  "Identity Design",
+  "Narrative Strategy",
+  "Digital Presence",
+  "Authority Building",
 ];
 
 export default coreSkills;
