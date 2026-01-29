@@ -69,8 +69,8 @@ export default function HomePage() {
             ═══════════════════════════════════════════════════════════════ */}
             {/* Mobile Hero - Image at top, content below */}
             <section className="md:hidden flex flex-col">
-                {/* Mobile Image - Top half */}
-                <div className="relative h-[50vh] w-full">
+                {/* Mobile Image - Top portion with soft fade */}
+                <div className="relative h-[45vh] w-full">
                     <Image
                         src={profileBackground}
                         alt=""
@@ -80,12 +80,18 @@ export default function HomePage() {
                         fill
                         className="object-cover object-top"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+                    {/* Soft shadow blend at bottom */}
+                    <div
+                        className="absolute inset-x-0 bottom-0 h-32"
+                        style={{
+                            background: 'linear-gradient(to bottom, transparent 0%, rgba(253, 242, 248, 0.3) 30%, rgba(253, 242, 248, 0.7) 60%, rgba(253, 242, 248, 1) 100%)'
+                        }}
+                    />
                 </div>
 
-                {/* Mobile Content - Below image */}
+                {/* Mobile Content - Seamlessly connected */}
                 <motion.div
-                    className="bg-gradient-to-br from-anushka-50 via-rose-50 to-cream px-6 py-10"
+                    className="bg-gradient-to-br from-anushka-50 via-rose-50 to-cream px-6 pt-2 pb-10 -mt-4"
                     initial={reduced ? undefined : { opacity: 0, y: 20 }}
                     animate={reduced ? undefined : { opacity: 1, y: 0 }}
                     transition={{ duration: reduced ? 0 : 0.6 }}
@@ -102,7 +108,7 @@ export default function HomePage() {
                     </motion.h1>
 
                     <motion.p
-                        className="text-lg text-gray-700 font-medium leading-relaxed mb-6"
+                        className="text-lg text-gray-700 font-medium leading-relaxed"
                         initial={reduced ? undefined : { opacity: 0, y: 20 }}
                         animate={reduced ? undefined : { opacity: 1, y: 0 }}
                         transition={{ duration: reduced ? 0 : 0.5, delay: 0.35 }}
@@ -110,21 +116,7 @@ export default function HomePage() {
                         I help ambitious women build personal brands that command attention.
                     </motion.p>
 
-                    <motion.button
-                        onClick={() => {
-                            const el = document.getElementById('apply-section');
-                            el?.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="group flex items-center gap-3 bg-gradient-to-r from-anushka-500 to-rose-500 hover:from-anushka-600 hover:to-rose-600 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 shadow-lg"
-                        initial={reduced ? undefined : { opacity: 0, y: 16 }}
-                        animate={reduced ? undefined : { opacity: 1, y: 0 }}
-                        transition={{ duration: reduced ? 0 : 0.5, delay: 0.5 }}
-                    >
-                        Start Here
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
+
                 </motion.div>
             </section>
 
