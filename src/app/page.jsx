@@ -35,32 +35,7 @@ export default function HomePage() {
         }
     };
 
-    const handleApplySubmit = async (data) => {
-        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyPEp0WbIMixZu8Q-OBn6qFw0vWESec5Ncu4wwbjPK6kE6gGRFP6RukNheDSLDG4lJJrQ/exec';
-        try {
-            const response = await fetch(GOOGLE_APP_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'rebirth-application', ...data })
-            });
-            if (!response.ok) {
-                await fetch(GOOGLE_APP_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'rebirth-application', ...data })
-                });
-            }
-        } catch (error) {
-            console.error('Submission error:', error);
-            await fetch(GOOGLE_APP_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'rebirth-application', ...data })
-            });
-        }
-    };
+
 
     return (
         <>
@@ -252,7 +227,7 @@ export default function HomePage() {
                                 >
                                     <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-anushka-500/50 via-rose-500/30 to-anushka-600/50">
                                         <div className="rounded-2xl bg-white/90 backdrop-blur-sm p-6 md:p-8 text-left">
-                                            <RebirthApplication onSubmit={handleApplySubmit} />
+                                            <RebirthApplication />
                                         </div>
                                     </div>
                                 </motion.div>

@@ -1,7 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Send, MessageCircle, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Send, MessageCircle, Check, Loader2, AlertCircle } from 'lucide-react';
+
+// Google Apps Script endpoint
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIQNs6Wsw0H4T0Bd47IYflMif2QTcbBTgoqAavTbtiERyUFNKtMxEJBSAHyu1Sdvpr2A/exec';
 
 // Flow configuration with conditional branching
 const FLOW_CONFIG = {
@@ -91,7 +94,7 @@ const FLOW_CONFIG = {
     }
 };
 
-export default function RebirthApplication({ onSubmit }) {
+export default function RebirthApplication() {
     const [currentStep, setCurrentStep] = useState('step1');
     const [responses, setResponses] = useState({});
     const [history, setHistory] = useState(['step1']);
@@ -99,11 +102,13 @@ export default function RebirthApplication({ onSubmit }) {
         name: '',
         email: '',
         phone: '',
+        platform: '',
         instagram: '',
         linkedin: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [submitError, setSubmitError] = useState('');
     const [visionText, setVisionText] = useState('');
 
     const step = FLOW_CONFIG[currentStep];
@@ -133,45 +138,86 @@ export default function RebirthApplication({ onSubmit }) {
 
     const handleContactChange = (field, value) => {
         setContactInfo(prev => ({ ...prev, [field]: value }));
+        // Clear error when user makes changes
+        if (submitError) setSubmitError('');
     };
 
     const isContactValid = () => {
         const hasName = contactInfo.name.trim().length > 0;
         const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactInfo.email);
         const hasPhone = contactInfo.phone.trim().length >= 10;
+        const hasPlatform = contactInfo.platform.length > 0;
         const hasSocial = contactInfo.instagram.trim().length > 0 || contactInfo.linkedin.trim().length > 0;
-        return hasName && hasEmail && hasPhone && hasSocial;
+        return hasName && hasEmail && hasPhone && hasPlatform && hasSocial;
     };
 
     const handleSubmit = async () => {
-        if (!isContactValid()) return;
+        if (!isContactValid() || isSubmitting) return;
 
         setIsSubmitting(true);
+        setSubmitError('');
 
-        // Prepare complete application data
-        const applicationData = {
-            ...responses,
-            vision: visionText,
-            ...contactInfo,
-            submittedAt: new Date().toISOString(),
+        // Build payload matching the exact required format
+        const payload = {
+            name: contactInfo.name.trim(),
+            email: contactInfo.email.trim(),
+            phone: contactInfo.phone.trim(),
+            platform: contactInfo.platform,
+            instagram: contactInfo.instagram.trim(),
+            linkedin: contactInfo.linkedin.trim(),
+            step1: responses['spark'] || '',
+            step2: responses['state-leader'] || responses['state-opportunities'] || responses['state-clarity'] || '',
+            step3: responses['commitment'] || '',
+            step4: visionText.trim(),
+            intention: responses['spark'] || '',
         };
 
-        // Call the onSubmit prop (which will handle Google Sheets integration)
-        if (onSubmit) {
-            try {
-                await onSubmit(applicationData);
-                setIsSubmitted(true);
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert('There was an issue submitting your application. Please try again.');
-            }
-        } else {
-            // Fallback: just log and show success
-            console.log('Application Data:', applicationData);
-            setIsSubmitted(true);
-        }
+        console.log("Submitting payload:", payload);
 
-        setIsSubmitting(false);
+        try {
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            const text = await response.text();
+            console.log("Server response:", text);
+
+            let result;
+            try {
+                result = JSON.parse(text);
+            } catch (e) {
+                // If response isn't JSON, assume success if status is ok (though unlikely with this script)
+                if (response.ok) {
+                    result = { success: true };
+                } else {
+                    throw new Error('Invalid server response');
+                }
+            }
+
+            if (result.success) {
+                setIsSubmitted(true);
+                // Clear form state on success
+                setResponses({});
+                setVisionText('');
+                setContactInfo({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    platform: '',
+                    instagram: '',
+                    linkedin: '',
+                });
+            } else {
+                setSubmitError(result.message || 'Something went wrong. Please try again.');
+            }
+        } catch (error) {
+            console.error("Submission failed:", error);
+            setSubmitError('Unable to submit. Please check your connection and try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const progressPercent = () => {
@@ -205,9 +251,9 @@ export default function RebirthApplication({ onSubmit }) {
                     <Check className="w-10 h-10 text-white" />
                 </motion.div>
                 <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent font-serif">
-                    Your application is in.
+                    Your application has been received.
                 </h3>
-                <p className="text-gray-700 max-w-md mx-auto">
+                <p className="text-gray-700 max-w-md mx-auto leading-relaxed">
                     I personally review every application. If Rebirth feels like the right fit for both of us,
                     I'll reach out within 48 hours to schedule a conversation.
                 </p>
@@ -354,6 +400,44 @@ export default function RebirthApplication({ onSubmit }) {
                                 onChange={(e) => handleContactChange('phone', e.target.value)}
                                 className="w-full p-4 rounded-xl border-2 border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30"
                             />
+
+                            {/* Platform selection */}
+                            <div>
+                                <p className="text-gray-600 mb-2 text-sm">Which platform do you primarily use? *</p>
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleContactChange('platform', 'Instagram')}
+                                        className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all font-medium ${contactInfo.platform === 'Instagram'
+                                            ? 'border-anushka-500 bg-anushka-50 text-anushka-700'
+                                            : 'border-anushka-200 bg-white/60 text-gray-600 hover:border-anushka-300'
+                                            }`}
+                                    >
+                                        Instagram
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleContactChange('platform', 'LinkedIn')}
+                                        className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all font-medium ${contactInfo.platform === 'LinkedIn'
+                                            ? 'border-anushka-500 bg-anushka-50 text-anushka-700'
+                                            : 'border-anushka-200 bg-white/60 text-gray-600 hover:border-anushka-300'
+                                            }`}
+                                    >
+                                        LinkedIn
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleContactChange('platform', 'Both')}
+                                        className={`flex-1 py-3 px-4 rounded-xl border-2 transition-all font-medium ${contactInfo.platform === 'Both'
+                                            ? 'border-anushka-500 bg-anushka-50 text-anushka-700'
+                                            : 'border-anushka-200 bg-white/60 text-gray-600 hover:border-anushka-300'
+                                            }`}
+                                    >
+                                        Both
+                                    </button>
+                                </div>
+                            </div>
+
                             <div className="grid md:grid-cols-2 gap-4">
                                 <input
                                     type="text"
@@ -374,15 +458,30 @@ export default function RebirthApplication({ onSubmit }) {
                                 * At least one social profile is required
                             </p>
 
+                            {/* Error message */}
+                            {submitError && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"
+                                >
+                                    <AlertCircle size={18} />
+                                    <span>{submitError}</span>
+                                </motion.div>
+                            )}
+
                             <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
+                                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                                 onClick={handleSubmit}
                                 disabled={!isContactValid() || isSubmitting}
                                 className="w-full py-4 rounded-xl bg-gradient-to-r from-anushka-500 to-rose-500 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-shadow"
                             >
                                 {isSubmitting ? (
-                                    'Submitting...'
+                                    <>
+                                        <Loader2 size={18} className="animate-spin" />
+                                        Submitting...
+                                    </>
                                 ) : (
                                     <>
                                         Submit Application <Send size={18} />
