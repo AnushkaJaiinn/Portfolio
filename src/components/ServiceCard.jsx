@@ -107,23 +107,6 @@ const ServiceCard = ({ icon, title, description, category = [], reverse = false 
                   ))}
                 </ul>
               )}
-
-              <div className="flex flex-wrap gap-3">
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="relative overflow-hidden"
-                >
-                  <a
-                    href="#apply"
-                    onClick={(e) => handleSmoothScroll(e, 'apply')}
-                    className="inline-block bg-gradient-to-r from-anushka-500 via-rose-500 to-pink-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
-                  >
-                    <span className="relative z-10">Apply for Rebirth</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-anushka-600 via-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </a>
-                </motion.div>
-              </div>
             </div>
           </div>
         </CardContent>
