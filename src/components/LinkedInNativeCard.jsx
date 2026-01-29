@@ -38,7 +38,7 @@ const LinkedInNativeCard = ({ profile }) => (
       {/* Location and Connections */}
       <div className="text-sm text-gray-600 mb-4">
         <p>Mumbai, India</p>
-        <p className="text-blue-600 font-medium">50,500 followers</p>
+        <p className="text-blue-600 font-medium">52,500 followers</p>
         <p className="text-gray-500">
           <a
             href="https://www.linkedin.com/in/jaibhagwanjindal/"

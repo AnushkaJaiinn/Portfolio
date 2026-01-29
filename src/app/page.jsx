@@ -67,7 +67,69 @@ export default function HomePage() {
             {/* ═══════════════════════════════════════════════════════════════
                 HERO - Bold, Declarative, First-Person
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="min-h-screen flex items-center justify-start relative text-white">
+            {/* Mobile Hero - Image at top, content below */}
+            <section className="md:hidden flex flex-col">
+                {/* Mobile Image - Top half */}
+                <div className="relative h-[50vh] w-full">
+                    <Image
+                        src={profileBackground}
+                        alt=""
+                        priority
+                        placeholder="blur"
+                        sizes="100vw"
+                        fill
+                        className="object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+                </div>
+
+                {/* Mobile Content - Below image */}
+                <motion.div
+                    className="bg-gradient-to-br from-anushka-50 via-rose-50 to-cream px-6 py-10"
+                    initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                    animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                    transition={{ duration: reduced ? 0 : 0.6 }}
+                >
+                    <motion.h1
+                        className="text-[3rem] leading-[0.95] font-bold tracking-tight mb-4"
+                        initial={reduced ? undefined : { opacity: 0, y: 24 }}
+                        animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                        transition={{ duration: reduced ? 0 : 0.6, delay: 0.2 }}
+                    >
+                        <span className="bg-gradient-to-r from-anushka-600 via-rose-600 to-pink-600 bg-clip-text text-transparent">
+                            Rebirth
+                        </span>
+                    </motion.h1>
+
+                    <motion.p
+                        className="text-lg text-gray-700 font-medium leading-relaxed mb-6"
+                        initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                        animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                        transition={{ duration: reduced ? 0 : 0.5, delay: 0.35 }}
+                    >
+                        I help ambitious women build personal brands that command attention.
+                    </motion.p>
+
+                    <motion.button
+                        onClick={() => {
+                            const el = document.getElementById('apply-section');
+                            el?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="group flex items-center gap-3 bg-gradient-to-r from-anushka-500 to-rose-500 hover:from-anushka-600 hover:to-rose-600 text-white font-semibold py-4 px-8 rounded-full transition-all duration-300 shadow-lg"
+                        initial={reduced ? undefined : { opacity: 0, y: 16 }}
+                        animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                        transition={{ duration: reduced ? 0 : 0.5, delay: 0.5 }}
+                    >
+                        Start Here
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </motion.button>
+                </motion.div>
+            </section>
+
+            {/* Desktop Hero - Full screen with overlay */}
+            <section className="hidden md:flex min-h-screen items-center justify-start relative text-white">
                 <div className="absolute inset-0 -z-10">
                     <Image
                         src={profileBackground}
@@ -76,16 +138,10 @@ export default function HomePage() {
                         placeholder="blur"
                         sizes="100vw"
                         fill
-                        className="hidden md:block object-cover object-center"
+                        className="object-cover object-center"
                     />
-                    <div className="block md:hidden absolute inset-0 bg-gradient-to-br from-rose-200 via-pink-300 to-rose-300">
-                        <div className="absolute inset-0 opacity-20" style={{
-                            backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255,255,255,0.4) 0%, transparent 50%),
-                                             radial-gradient(circle at 75% 75%, rgba(255,255,255,0.3) 0%, transparent 50%)`
-                        }} />
-                    </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent md:from-black/60 md:via-black/30 md:to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
 
                 <motion.div
                     className="relative z-10 container mx-auto px-6 flex items-center min-h-[inherit]"
@@ -93,9 +149,9 @@ export default function HomePage() {
                     animate={reduced ? undefined : { opacity: 1, x: 0 }}
                     transition={{ duration: reduced ? 0 : 0.8 }}
                 >
-                    <div className="w-full md:max-w-[55%] lg:max-w-[48%] space-y-6">
+                    <div className="max-w-[55%] lg:max-w-[48%] space-y-6">
                         <motion.h1
-                            className="text-[3.5rem] md:text-[4.5rem] leading-[0.95] font-bold text-white tracking-tight"
+                            className="text-[4.5rem] leading-[0.95] font-bold text-white tracking-tight"
                             style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.9)' }}
                             initial={reduced ? undefined : { opacity: 0, y: 24 }}
                             animate={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -107,7 +163,7 @@ export default function HomePage() {
                         </motion.h1>
 
                         <motion.p
-                            className="text-lg md:text-xl text-white/90 font-medium max-w-md leading-relaxed"
+                            className="text-xl text-white/90 font-medium max-w-md leading-relaxed"
                             style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.7)' }}
                             initial={reduced ? undefined : { opacity: 0, y: 20 }}
                             animate={reduced ? undefined : { opacity: 1, y: 0 }}
@@ -138,7 +194,7 @@ export default function HomePage() {
                     </div>
                 </motion.div>
 
-                {/* Scroll indicator */}
+                {/* Scroll indicator - Desktop only */}
                 <motion.div
                     className="absolute bottom-8 left-1/2 -translate-x-1/2"
                     initial={{ opacity: 0 }}
