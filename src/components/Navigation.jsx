@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const navLinks = ['home', 'about', 'transformation', 'results', 'story', 'testimonial', 'contact'];
+const navLinks = ['home', 'about', 'apply', 'linkedin', 'results', 'transformation'];
 
 export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
@@ -79,7 +79,7 @@ export default function Navigation() {
                   onClick={(e) => handleSmoothScroll(e, link)}
                   className={`capitalize pb-1 border-b-2 transition-colors duration-300 font-medium ${activeSection === link ? 'border-anushka-500 text-anushka-600' : 'border-transparent text-gray-700 hover:border-anushka-400 hover:text-anushka-600'}`}
                 >
-                  {link === 'transformation' ? 'The Program' : link === 'results' ? 'Results' : link === 'story' ? 'Story' : link === 'contact' ? 'Apply' : link}
+                  {link === 'apply' ? 'Work With Me' : link === 'linkedin' ? 'LinkedIn' : link === 'transformation' ? 'The Program' : link === 'results' ? 'Results' : link}
                 </a>
               </li>
             ))}
@@ -124,7 +124,7 @@ export default function Navigation() {
                       : 'text-gray-700 hover:bg-anushka-100'
                       }`}
                   >
-                    {link === 'transformation' ? 'The Program' : link === 'results' ? 'Results' : link === 'story' ? 'Story' : link === 'contact' ? 'Apply' : link}
+                    {link === 'apply' ? 'Work With Me' : link === 'linkedin' ? 'LinkedIn' : link === 'transformation' ? 'The Program' : link === 'results' ? 'Results' : link}
                   </a>
                 </li>
               ))}
