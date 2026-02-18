@@ -175,43 +175,30 @@ export default function RebirthApplication() {
         console.log("Submitting payload:", payload);
 
         try {
-            const response = await fetch(APPS_SCRIPT_URL, {
+            // Using mode: 'no-cors' is essential for Google Apps Script
+            // It allows the request to complete even though we can't read the response (opaque)
+            // This prevents the "Network Error" caused by Google's 302 redirects
+            await fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(payload),
             });
 
-            const text = await response.text();
-            console.log("Server response:", text);
+            // With no-cors, we get an opaque response and can't read the status/text
+            // We assume success if the fetch promise resolves
+            setIsSubmitted(true);
+            setResponses({});
+            setVisionText('');
+            setContactInfo({
+                name: '',
+                email: '',
+                phone: '',
+                platform: '',
+                instagram: '',
+                linkedin: '',
+            });
 
-            let result;
-            try {
-                result = JSON.parse(text);
-            } catch (e) {
-                // If response isn't JSON, assume success if status is ok (though unlikely with this script)
-                if (response.ok) {
-                    result = { success: true };
-                } else {
-                    throw new Error('Invalid server response');
-                }
-            }
-
-            if (result.success) {
-                setIsSubmitted(true);
-                // Clear form state on success
-                setResponses({});
-                setVisionText('');
-                setContactInfo({
-                    name: '',
-                    email: '',
-                    phone: '',
-                    platform: '',
-                    instagram: '',
-                    linkedin: '',
-                });
-            } else {
-                setSubmitError(result.message || 'Something went wrong. Please try again.');
-            }
         } catch (error) {
             console.error("Submission failed:", error);
             setSubmitError('Unable to submit. Please check your connection and try again.');
