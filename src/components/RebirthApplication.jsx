@@ -1,7 +1,90 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Send, MessageCircle, Check, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Send, MessageCircle, Loader2, AlertCircle } from 'lucide-react';
+
+// ── Topmate desktop-scale booking embed ──────────────────────────
+// Forces Topmate to render its desktop layout regardless of iframe
+// container width by setting inner width to 1200px and scaling it
+// down proportionally to fit the actual container.
+function TopmateEmbed({ bookingUrl }) {
+    const wrapperRef = useRef(null);
+    const innerRef  = useRef(null);
+    const DESKTOP_W = 1200; // px — Topmate desktop breakpoint
+    const IFRAME_H  = 860;  // px — approximate full-page height
+
+    useEffect(() => {
+        function rescale() {
+            const wrapper = wrapperRef.current;
+            const inner   = innerRef.current;
+            if (!wrapper || !inner) return;
+            const scale = wrapper.offsetWidth / DESKTOP_W;
+            inner.style.transform       = `scale(${scale})`;
+            inner.style.transformOrigin = 'top left';
+            // Collapse wrapper height to match scaled iframe — no dead space below
+            wrapper.style.height = `${IFRAME_H * scale}px`;
+        }
+
+        rescale();
+
+        // Use ResizeObserver instead of window resize so the iframe
+        // rescales automatically when the parent container expands via
+        // the booking-stage CSS class (CSS transition, not window resize).
+        const ro = new ResizeObserver(rescale);
+        if (wrapperRef.current) ro.observe(wrapperRef.current);
+        window.addEventListener('resize', rescale);
+
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', rescale);
+        };
+    }, []);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
+        >
+            {/* Booking wrapper — width driven by parent .form-container           */}
+            {/* maxWidth removed so booking-stage CSS expansion takes full effect   */}
+            <div
+                ref={wrapperRef}
+                className="w-full overflow-hidden rounded-2xl shadow-lg border border-anushka-200/50 bg-white"
+                style={{ margin: '0 auto' }}
+            >
+                {/* Inner div forced to desktop width, then scaled down */}
+                <div ref={innerRef} style={{ width: `${DESKTOP_W}px` }}>
+                    <iframe
+                        src={bookingUrl}
+                        title="Book a Strategy Call"
+                        style={{
+                            width:  `${DESKTOP_W}px`,
+                            height: `${IFRAME_H}px`,
+                            border: 'none',
+                            display: 'block',
+                        }}
+                        allow="payment"
+                        loading="lazy"
+                    />
+                </div>
+            </div>
+
+            {/* Fallback for browsers that block iframes */}
+            <p className="mt-3 text-center text-xs text-gray-400">
+                Booking form not loading?{' '}
+                <a
+                    href={bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-anushka-500 underline hover:text-anushka-700"
+                >
+                    Open directly here.
+                </a>
+            </p>
+        </motion.div>
+    );
+}
 
 // Google Apps Script endpoint
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIQNs6Wsw0H4T0Bd47IYflMif2QTcbBTgoqAavTbtiERyUFNKtMxEJBSAHyu1Sdvpr2A/exec';
@@ -110,6 +193,8 @@ export default function RebirthApplication() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [visionText, setVisionText] = useState('');
+    // Stores the final Topmate URL (with prefill params) set on submit success
+    const [bookingUrl, setBookingUrl] = useState('');
 
     const step = FLOW_CONFIG[currentStep];
 
@@ -185,8 +270,24 @@ export default function RebirthApplication() {
                 body: JSON.stringify(payload),
             });
 
-            // With no-cors, we get an opaque response and can't read the status/text
-            // We assume success if the fetch promise resolves
+            // no-cors returns an opaque response — assume success if fetch resolves.
+
+            // Build prefill URL — capture visionText NOW before state reset below.
+            // Topmate may not support all params; if not, they're silently ignored.
+            const prefilled = new URL('https://topmate.io/anushka_jain10/1307274');
+            prefilled.searchParams.set('name',  contactInfo.name.trim());
+            prefilled.searchParams.set('email', contactInfo.email.trim());
+            prefilled.searchParams.set('phone', contactInfo.phone.trim());
+            // Pass the 90-day vision as notes — surfaces context for the call
+            if (visionText.trim()) {
+                prefilled.searchParams.set('notes', visionText.trim());
+            }
+            setBookingUrl(prefilled.toString());
+
+            // Expand the apply-section container to desktop width on lg+ screens
+            // CSS in globals.css: body.booking-stage .form-container { max-width: 1100px }
+            document.body.classList.add('booking-stage');
+
             setIsSubmitted(true);
             setResponses({});
             setVisionText('');
@@ -221,31 +322,11 @@ export default function RebirthApplication() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     };
 
-    // Success state
+    // ── Success state: Direct Topmate embed, no gate message ────────
+    // Form transitions out, booking UI transitions in seamlessly.
+    // No intermediate messaging — user flows straight through.
     if (isSubmitted) {
-        return (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-12"
-            >
-                <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-                    className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-anushka-500 to-rose-500 flex items-center justify-center"
-                >
-                    <Check className="w-10 h-10 text-white" />
-                </motion.div>
-                <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-anushka-600 to-rose-600 bg-clip-text text-transparent font-serif">
-                    Your application has been received.
-                </h3>
-                <p className="text-gray-700 max-w-md mx-auto leading-relaxed">
-                    I personally review every application. If Rebirth feels like the right fit for both of us,
-                    I'll reach out within 48 hours to schedule a conversation.
-                </p>
-            </motion.div>
-        );
+        return <TopmateEmbed bookingUrl={bookingUrl} />;
     }
 
     // Exit screens (early exit or soft exit)

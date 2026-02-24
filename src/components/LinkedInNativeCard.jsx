@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { MoreHorizontal } from 'lucide-react';
 
 const LinkedInNativeCard = ({ profile }) => (
-  <Card className="bg-white text-gray-800 overflow-hidden transform transition-transform duration-300 hover:scale-105 border border-neutral-300">
+  <Card className="bg-white text-gray-800 overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] border border-neutral-800/20 shadow-md rounded-2xl">
     <div className="relative">
       <div className="relative w-full aspect-[804/201] overflow-hidden">
         <Image src={profile.bannerUrl} alt={`${profile.name}'s Banner`} layout="fill" objectFit="cover" />

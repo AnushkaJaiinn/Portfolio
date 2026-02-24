@@ -4,62 +4,55 @@
 
 @layer base {
   :root {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
+    /* ── Light theme (default) ───────────────────────────────── */
+    --background: 0 0% 100%;          /* white */
+    --foreground: 222 47% 11%;        /* near-black */
 
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
- 
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
- 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
- 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
- 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
- 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
- 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
- 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 330 81% 60%;           /* anushka pink */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 330 20% 96%;
+    --secondary-foreground: 330 40% 30%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 330 20% 96%;
+    --accent-foreground: 330 40% 30%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;            /* light grey border */
+    --input: 220 13% 91%;
+    --ring: 330 81% 60%;
+
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
- 
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
- 
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
- 
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
- 
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
- 
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
- 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 14.9%;
@@ -74,10 +67,23 @@
     @apply bg-background text-foreground;
   }
   
-  /* Scroll offset to account for fixed navbar */
+  /* Smooth scrolling — no scroll-padding needed (no navbar) */
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 90px; /* Height of navbar + padding - matches scroll-mt-24 */
+  }
+}
+
+/* ── Form container — narrow during qualification, wide at booking ── */
+/* The .form-container class is applied to the apply-section wrapper   */
+/* in page.jsx. When form submission succeeds, RebirthApplication adds  */
+/* "booking-stage" to <body>, triggering the desktop expansion below.  */
+.form-container {
+  transition: max-width 0.45s ease;
+}
+
+@media (min-width: 1024px) {
+  body.booking-stage .form-container {
+    max-width: 1100px !important;
   }
 }
 
