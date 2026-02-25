@@ -73,20 +73,6 @@
   }
 }
 
-/* ── Form container — narrow during qualification, wide at booking ── */
-/* The .form-container class is applied to the apply-section wrapper   */
-/* in page.jsx. When form submission succeeds, RebirthApplication adds  */
-/* "booking-stage" to <body>, triggering the desktop expansion below.  */
-.form-container {
-  transition: max-width 0.45s ease;
-}
-
-@media (min-width: 1024px) {
-  body.booking-stage .form-container {
-    max-width: 1100px !important;
-  }
-}
-
 /* Responsive hero background images */
 .desktop-hero-bg {
   display: block; /* Show by default on desktop */

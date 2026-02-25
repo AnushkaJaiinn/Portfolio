@@ -4,9 +4,13 @@ const repoNameFromEnv = process.env.NEXT_PUBLIC_BASE_PATH || '';
 const githubRepo = process.env.GITHUB_REPOSITORY ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}` : '';
 const publicPath = repoNameFromEnv || (process.env.NODE_ENV === 'production' ? githubRepo : '');
 
+// Set NEXT_PUBLIC_STATIC_EXPORT=true when building for GitHub Pages / static hosting.
+// Leave unset (or false) for Vercel deployments — this enables serverless API routes
+// (api/topmate-webhook and api/check-booking) which require a Node.js runtime.
+const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true';
+
 const nextConfig = {
-  output: 'export',
-  distDir: 'out',
+  ...(isStaticExport && { output: 'export', distDir: 'out' }),
   images: {
     unoptimized: true
   },

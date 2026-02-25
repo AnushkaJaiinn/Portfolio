@@ -3,84 +3,144 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Send, MessageCircle, Loader2, AlertCircle } from 'lucide-react';
 
-// ── Topmate desktop-scale booking embed ──────────────────────────
-// Forces Topmate to render its desktop layout regardless of iframe
-// container width by setting inner width to 1200px and scaling it
-// down proportionally to fit the actual container.
-function TopmateEmbed({ bookingUrl }) {
-    const wrapperRef = useRef(null);
-    const innerRef  = useRef(null);
-    const DESKTOP_W = 1200; // px — Topmate desktop breakpoint
-    const IFRAME_H  = 860;  // px — approximate full-page height
+// WhatsApp private channel link — update this URL when the channel is ready
+const WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/0029VatEOTE6xCSm6osk4A31';
+
+// ── Booking confirmation ─────────────────────────────────────────────────────
+// Rendered immediately after successful form submission.
+//
+// Stages:
+//   1. "pre-booking"  — CTA button prompting user to open Topmate.
+//   2. "post-booking" — Welcome-back screen shown when user returns to this tab
+//                        after visiting Topmate (detected via focus +
+//                        visibilitychange events, gated on bookingStarted ref).
+//
+// No iframe. No redirect. No polling. Pure tab-return detection.
+function BookingConfirmation({ bookingUrl }) {
+    // True once user has clicked the CTA and Topmate opened in a new tab
+    const bookingStarted = useRef(false);
+
+    // Drives which UI is rendered — 'cta' | 'welcome'
+    const [stage, setStage] = useState('cta');
+
+    // Helper text shown below the CTA button; updated once booking starts
+    const [helperText, setHelperText] = useState(
+        'After completing your payment, return to this tab to continue.'
+    );
 
     useEffect(() => {
-        function rescale() {
-            const wrapper = wrapperRef.current;
-            const inner   = innerRef.current;
-            if (!wrapper || !inner) return;
-            const scale = wrapper.offsetWidth / DESKTOP_W;
-            inner.style.transform       = `scale(${scale})`;
-            inner.style.transformOrigin = 'top left';
-            // Collapse wrapper height to match scaled iframe — no dead space below
-            wrapper.style.height = `${IFRAME_H * scale}px`;
+        // Called when this tab regains focus or becomes visible.
+        // Only transitions to welcome-back if user previously clicked the CTA.
+        function handleReturn() {
+            if (bookingStarted.current) {
+                setStage('welcome');
+            }
         }
 
-        rescale();
+        // window focus fires when OS focus moves back to this tab/window
+        window.addEventListener('focus', handleReturn);
 
-        // Use ResizeObserver instead of window resize so the iframe
-        // rescales automatically when the parent container expands via
-        // the booking-stage CSS class (CSS transition, not window resize).
-        const ro = new ResizeObserver(rescale);
-        if (wrapperRef.current) ro.observe(wrapperRef.current);
-        window.addEventListener('resize', rescale);
+        // visibilitychange catches mobile tab-switching and alt-tab on desktop
+        const onVisibility = () => {
+            if (!document.hidden) handleReturn();
+        };
+        document.addEventListener('visibilitychange', onVisibility);
 
         return () => {
-            ro.disconnect();
-            window.removeEventListener('resize', rescale);
+            window.removeEventListener('focus', handleReturn);
+            document.removeEventListener('visibilitychange', onVisibility);
         };
-    }, []);
+    }, []); // register once — bookingStarted is a ref, no dep needed
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: 'easeOut' }}
-        >
-            {/* Booking wrapper — width driven by parent .form-container           */}
-            {/* maxWidth removed so booking-stage CSS expansion takes full effect   */}
-            <div
-                ref={wrapperRef}
-                className="w-full overflow-hidden rounded-2xl shadow-lg border border-anushka-200/50 bg-white"
-                style={{ margin: '0 auto' }}
+    // ── CTA click handler ─────────────────────────────────────────
+    function handleBookingClick() {
+        bookingStarted.current = true;
+        window.open(bookingUrl, '_blank', 'noopener,noreferrer');
+        // Update helper text to acknowledge the action
+        setHelperText('Booking is open in a new tab. Complete your payment there, then come back here.');
+    }
+
+    // ── Welcome-back screen ───────────────────────────────────────
+    if (stage === 'welcome') {
+        return (
+            <motion.div
+                key="welcome"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+                className="text-center max-w-[720px] mx-auto px-5 py-10"
             >
-                {/* Inner div forced to desktop width, then scaled down */}
-                <div ref={innerRef} style={{ width: `${DESKTOP_W}px` }}>
-                    <iframe
-                        src={bookingUrl}
-                        title="Book a Strategy Call"
-                        style={{
-                            width:  `${DESKTOP_W}px`,
-                            height: `${IFRAME_H}px`,
-                            border: 'none',
-                            display: 'block',
-                        }}
-                        allow="payment"
-                        loading="lazy"
-                    />
-                </div>
-            </div>
+                <h2 className="text-[28px] font-bold text-gray-900 mb-4 leading-snug">
+                    Welcome Back 🎉
+                </h2>
 
-            {/* Fallback for browsers that block iframes */}
-            <p className="mt-3 text-center text-xs text-gray-400">
-                Booking form not loading?{' '}
+                <p className="text-gray-600 mb-3 leading-relaxed">
+                    If your booking is complete, your confirmation has been sent to your email and WhatsApp.
+                </p>
+
+                <p className="text-gray-600 mb-8 leading-relaxed">
+                    We're excited to support your next chapter.
+                </p>
+
+                {/* WhatsApp CTA — soft warm green to feel distinct from booking CTA */}
                 <a
-                    href={bookingUrl}
+                    href={WHATSAPP_CHANNEL_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-anushka-500 underline hover:text-anushka-700"
+                    className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium text-base px-7 py-[13px] rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
                 >
-                    Open directly here.
+                    <MessageCircle className="w-4 h-4" />
+                    Join Private WhatsApp Channel
                 </a>
+
+                <p className="mt-5 text-[13px] text-gray-400 leading-relaxed">
+                    Didn't complete your booking?{' '}
+                    <button
+                        onClick={() => {
+                            bookingStarted.current = false;
+                            setStage('cta');
+                            setHelperText('After completing your payment, return to this tab to continue.');
+                        }}
+                        className="text-anushka-500 underline hover:text-anushka-700 transition-colors"
+                    >
+                        Go back
+                    </button>
+                </p>
+            </motion.div>
+        );
+    }
+
+    // ── Pre-booking CTA screen ────────────────────────────────────
+    return (
+        <motion.div
+            key="cta"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
+            className="text-center max-w-[720px] mx-auto px-5 py-10"
+        >
+            {/* Heading */}
+            <h2 className="text-[28px] font-bold text-gray-900 mb-4 leading-snug">
+                Secure Your Strategy Call
+            </h2>
+
+            {/* Supporting copy */}
+            <p className="text-gray-600 mb-8 leading-relaxed">
+                Your details have been saved. Complete your booking to confirm your session.
+            </p>
+
+            {/* Primary CTA — opens Topmate in new tab, marks bookingStarted */}
+            <button
+                onClick={handleBookingClick}
+                className="inline-flex items-center gap-2 bg-anushka-500 hover:bg-anushka-600 active:bg-anushka-700 text-white font-semibold text-base px-7 py-[14px] rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+            >
+                Continue to Secure Your Call
+                <ArrowRight className="w-4 h-4" />
+            </button>
+
+            {/* Helper text — updates once booking tab is opened */}
+            <p className="mt-5 text-[13px] text-gray-400 leading-relaxed">
+                {helperText}
             </p>
         </motion.div>
     );
@@ -195,6 +255,9 @@ export default function RebirthApplication() {
     const [visionText, setVisionText] = useState('');
     // Stores the final Topmate URL (with prefill params) set on submit success
     const [bookingUrl, setBookingUrl] = useState('');
+    // Captured before contactInfo is reset — passed to BookingConfirmation
+    // so it can call /api/check-booking?email=… on tab return
+    const [submittedEmail, setSubmittedEmail] = useState('');
 
     const step = FLOW_CONFIG[currentStep];
 
@@ -255,6 +318,9 @@ export default function RebirthApplication() {
             step3: responses['commitment'] || '',
             step4: visionText.trim(),
             intention: responses['spark'] || '',
+            // Initial booking status — set to "Applied" on form submit.
+            // The topmate-webhook API updates this to "Booked" after payment.
+            booking_status: 'Applied',
         };
 
         console.log("Submitting payload:", payload);
@@ -283,11 +349,10 @@ export default function RebirthApplication() {
                 prefilled.searchParams.set('notes', visionText.trim());
             }
             setBookingUrl(prefilled.toString());
+            // Capture email before contactInfo is reset below
+            setSubmittedEmail(contactInfo.email.trim());
 
-            // Expand the apply-section container to desktop width on lg+ screens
-            // CSS in globals.css: body.booking-stage .form-container { max-width: 1100px }
-            document.body.classList.add('booking-stage');
-
+            // Show booking confirmation UI — no iframe, no redirect
             setIsSubmitted(true);
             setResponses({});
             setVisionText('');
@@ -322,11 +387,11 @@ export default function RebirthApplication() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     };
 
-    // ── Success state: Direct Topmate embed, no gate message ────────
-    // Form transitions out, booking UI transitions in seamlessly.
-    // No intermediate messaging — user flows straight through.
+    // ── Success state: Booking confirmation ──────────────────────────
+    // Form fades out, confirmation UI fades in.
+    // BookingConfirmation handles CTA → tab-return → API check → confirmed/pending.
     if (isSubmitted) {
-        return <TopmateEmbed bookingUrl={bookingUrl} />;
+        return <BookingConfirmation bookingUrl={bookingUrl} userEmail={submittedEmail} />;
     }
 
     // Exit screens (early exit or soft exit)

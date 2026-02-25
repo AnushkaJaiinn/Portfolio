@@ -398,9 +398,9 @@ export default function HomePage() {
             ══════════════════════════════════════════════════════════ */}
             <section id="apply-section" className="py-16 md:py-24 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream scroll-mt-4" ref={applyRef}>
                 <div className="container mx-auto px-6">
-                    {/* form-container: governed by globals.css — expands on booking-stage */}
+                    {/* Apply form — qualification funnel + booking confirmation */}
                     <motion.div
-                        className="max-w-2xl mx-auto form-container"
+                        className="max-w-2xl mx-auto"
                         variants={fadeInUp}
                         initial="hidden"
                         whileInView="visible"
