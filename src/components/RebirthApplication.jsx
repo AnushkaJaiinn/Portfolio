@@ -1,149 +1,36 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Send, MessageCircle, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Send, Loader2, AlertCircle } from 'lucide-react';
 
-// WhatsApp private channel link — update this URL when the channel is ready
-const WHATSAPP_CHANNEL_URL = 'https://whatsapp.com/channel/0029VatEOTE6xCSm6osk4A31';
+// ── Phone normalizer ─────────────────────────────────────────────────────
+// Ensures the number is in international format (+91XXXXXXXXXX) before it
+// is passed to Topmate as a prefill parameter.
+// Handles all common user-input variants:
+//   "08930665679"       → "+918930665679"
+//   "8930665679"        → "+918930665679"
+//   "+91 89306 65679"   → "+918930665679"
+//   "91-8930665679"     → "+918930665679"
+function formatPhone(raw) {
+    // Strip everything that isn't a digit
+    let digits = raw.replace(/\D/g, '');
 
-// ── Booking confirmation ─────────────────────────────────────────────────────
-// Rendered immediately after successful form submission.
-//
-// Stages:
-//   1. "pre-booking"  — CTA button prompting user to open Topmate.
-//   2. "post-booking" — Welcome-back screen shown when user returns to this tab
-//                        after visiting Topmate (detected via focus +
-//                        visibilitychange events, gated on bookingStarted ref).
-//
-// No iframe. No redirect. No polling. Pure tab-return detection.
-function BookingConfirmation({ bookingUrl }) {
-    // True once user has clicked the CTA and Topmate opened in a new tab
-    const bookingStarted = useRef(false);
+    // Remove a single leading zero (STD-style trunk prefix)
+    if (digits.startsWith('0')) {
+        digits = digits.slice(1);
+    }
 
-    // Drives which UI is rendered — 'cta' | 'welcome'
-    const [stage, setStage] = useState('cta');
-
-    // Helper text shown below the CTA button; updated once booking starts
-    const [helperText, setHelperText] = useState(
-        'After completing your payment, return to this tab to continue.'
-    );
-
-    useEffect(() => {
-        // Called when this tab regains focus or becomes visible.
-        // Only transitions to welcome-back if user previously clicked the CTA.
-        function handleReturn() {
-            if (bookingStarted.current) {
-                setStage('welcome');
-            }
+    // If the number already carries the country code (91 + 10 digits = 12 digits),
+    // leave it as-is; otherwise prepend the Indian country code.
+    if (!digits.startsWith('91') || digits.length !== 12) {
+        // Only prepend 91 when the remaining number is exactly 10 digits
+        if (digits.length === 10) {
+            digits = '91' + digits;
         }
-
-        // window focus fires when OS focus moves back to this tab/window
-        window.addEventListener('focus', handleReturn);
-
-        // visibilitychange catches mobile tab-switching and alt-tab on desktop
-        const onVisibility = () => {
-            if (!document.hidden) handleReturn();
-        };
-        document.addEventListener('visibilitychange', onVisibility);
-
-        return () => {
-            window.removeEventListener('focus', handleReturn);
-            document.removeEventListener('visibilitychange', onVisibility);
-        };
-    }, []); // register once — bookingStarted is a ref, no dep needed
-
-    // ── CTA click handler ─────────────────────────────────────────
-    function handleBookingClick() {
-        bookingStarted.current = true;
-        window.open(bookingUrl, '_blank', 'noopener,noreferrer');
-        // Update helper text to acknowledge the action
-        setHelperText('Booking is open in a new tab. Complete your payment there, then come back here.');
+        // If the length is unexpected, pass through as-is and let Topmate handle it
     }
 
-    // ── Welcome-back screen ───────────────────────────────────────
-    if (stage === 'welcome') {
-        return (
-            <motion.div
-                key="welcome"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, ease: 'easeOut' }}
-                className="text-center max-w-[720px] mx-auto px-5 py-10"
-            >
-                <h2 className="text-[28px] font-bold text-gray-900 mb-4 leading-snug">
-                    Welcome Back 🎉
-                </h2>
-
-                <p className="text-gray-600 mb-3 leading-relaxed">
-                    If your booking is complete, your confirmation has been sent to your email and WhatsApp.
-                </p>
-
-                <p className="text-gray-600 mb-8 leading-relaxed">
-                    We're excited to support your next chapter.
-                </p>
-
-                {/* WhatsApp CTA — soft warm green to feel distinct from booking CTA */}
-                <a
-                    href={WHATSAPP_CHANNEL_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-medium text-base px-7 py-[13px] rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-                >
-                    <MessageCircle className="w-4 h-4" />
-                    Join Private WhatsApp Channel
-                </a>
-
-                <p className="mt-5 text-[13px] text-gray-400 leading-relaxed">
-                    Didn't complete your booking?{' '}
-                    <button
-                        onClick={() => {
-                            bookingStarted.current = false;
-                            setStage('cta');
-                            setHelperText('After completing your payment, return to this tab to continue.');
-                        }}
-                        className="text-anushka-500 underline hover:text-anushka-700 transition-colors"
-                    >
-                        Go back
-                    </button>
-                </p>
-            </motion.div>
-        );
-    }
-
-    // ── Pre-booking CTA screen ────────────────────────────────────
-    return (
-        <motion.div
-            key="cta"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: 'easeOut' }}
-            className="text-center max-w-[720px] mx-auto px-5 py-10"
-        >
-            {/* Heading */}
-            <h2 className="text-[28px] font-bold text-gray-900 mb-4 leading-snug">
-                Secure Your Strategy Call
-            </h2>
-
-            {/* Supporting copy */}
-            <p className="text-gray-600 mb-8 leading-relaxed">
-                Your details have been saved. Complete your booking to confirm your session.
-            </p>
-
-            {/* Primary CTA — opens Topmate in new tab, marks bookingStarted */}
-            <button
-                onClick={handleBookingClick}
-                className="inline-flex items-center gap-2 bg-anushka-500 hover:bg-anushka-600 active:bg-anushka-700 text-white font-semibold text-base px-7 py-[14px] rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
-            >
-                Continue to Secure Your Call
-                <ArrowRight className="w-4 h-4" />
-            </button>
-
-            {/* Helper text — updates once booking tab is opened */}
-            <p className="mt-5 text-[13px] text-gray-400 leading-relaxed">
-                {helperText}
-            </p>
-        </motion.div>
-    );
+    return '+' + digits;
 }
 
 // Google Apps Script endpoint
@@ -253,11 +140,6 @@ export default function RebirthApplication() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [visionText, setVisionText] = useState('');
-    // Stores the final Topmate URL (with prefill params) set on submit success
-    const [bookingUrl, setBookingUrl] = useState('');
-    // Captured before contactInfo is reset — passed to BookingConfirmation
-    // so it can call /api/check-booking?email=… on tab return
-    const [submittedEmail, setSubmittedEmail] = useState('');
 
     const step = FLOW_CONFIG[currentStep];
 
@@ -285,8 +167,17 @@ export default function RebirthApplication() {
     };
 
     const handleContactChange = (field, value) => {
-        setContactInfo(prev => ({ ...prev, [field]: value }));
-        // Clear error when user makes changes
+        if (field === 'platform') {
+            // When platform changes, clear the field that becomes disabled
+            setContactInfo(prev => ({
+                ...prev,
+                platform: value,
+                ...(value === 'Instagram' ? { linkedin: '' } : {}),
+                ...(value === 'LinkedIn'  ? { instagram: '' } : {}),
+            }));
+        } else {
+            setContactInfo(prev => ({ ...prev, [field]: value }));
+        }
         if (submitError) setSubmitError('');
     };
 
@@ -295,7 +186,16 @@ export default function RebirthApplication() {
         const hasEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactInfo.email);
         const hasPhone = contactInfo.phone.trim().length >= 10;
         const hasPlatform = contactInfo.platform.length > 0;
-        const hasSocial = contactInfo.instagram.trim().length > 0 || contactInfo.linkedin.trim().length > 0;
+
+        let hasSocial = false;
+        if (contactInfo.platform === 'Instagram') {
+            hasSocial = contactInfo.instagram.trim().length > 0;
+        } else if (contactInfo.platform === 'LinkedIn') {
+            hasSocial = contactInfo.linkedin.trim().length > 0;
+        } else if (contactInfo.platform === 'Both') {
+            hasSocial = contactInfo.instagram.trim().length > 0 && contactInfo.linkedin.trim().length > 0;
+        }
+
         return hasName && hasEmail && hasPhone && hasPlatform && hasSocial;
     };
 
@@ -338,21 +238,19 @@ export default function RebirthApplication() {
 
             // no-cors returns an opaque response — assume success if fetch resolves.
 
-            // Build prefill URL — capture visionText NOW before state reset below.
-            // Topmate may not support all params; if not, they're silently ignored.
+            // Build Topmate prefill URL and open immediately in new tab.
+            // No intermediate booking screen — user goes straight to Topmate.
             const prefilled = new URL('https://topmate.io/anushka_jain10/1307274');
             prefilled.searchParams.set('name',  contactInfo.name.trim());
             prefilled.searchParams.set('email', contactInfo.email.trim());
-            prefilled.searchParams.set('phone', contactInfo.phone.trim());
-            // Pass the 90-day vision as notes — surfaces context for the call
+            prefilled.searchParams.set('phone', formatPhone(contactInfo.phone));
             if (visionText.trim()) {
                 prefilled.searchParams.set('notes', visionText.trim());
             }
-            setBookingUrl(prefilled.toString());
-            // Capture email before contactInfo is reset below
-            setSubmittedEmail(contactInfo.email.trim());
 
-            // Show booking confirmation UI — no iframe, no redirect
+            // Open booking tab before resetting state so values are captured
+            window.open(prefilled.toString(), '_blank', 'noopener,noreferrer');
+
             setIsSubmitted(true);
             setResponses({});
             setVisionText('');
@@ -374,10 +272,13 @@ export default function RebirthApplication() {
     };
 
     const progressPercent = () => {
-        const stepOrder = ['step1', 'step2a', 'step2b', 'step2c', 'step3', 'step4', 'step5'];
-        const currentIndex = stepOrder.findIndex(s => s === currentStep ||
-            (currentStep.startsWith('step2') && s.startsWith('step2')));
-        return Math.min(((currentIndex + 1) / 5) * 100, 100);
+        const TOTAL_STEPS = 5;
+        if (currentStep === 'step1') return (1 / TOTAL_STEPS) * 100;
+        if (currentStep.startsWith('step2')) return (2 / TOTAL_STEPS) * 100;
+        if (currentStep === 'step3') return (3 / TOTAL_STEPS) * 100;
+        if (currentStep === 'step4') return (4 / TOTAL_STEPS) * 100;
+        if (currentStep === 'step5') return (5 / TOTAL_STEPS) * 100;
+        return 0;
     };
 
     // Animation variants
@@ -387,11 +288,42 @@ export default function RebirthApplication() {
         exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
     };
 
-    // ── Success state: Booking confirmation ──────────────────────────
-    // Form fades out, confirmation UI fades in.
-    // BookingConfirmation handles CTA → tab-return → API check → confirmed/pending.
+    const handleReset = () => {
+        setCurrentStep('step1');
+        setHistory(['step1']);
+        setResponses({});
+        setVisionText('');
+        setContactInfo({ name: '', email: '', phone: '', platform: '', instagram: '', linkedin: '' });
+        setSubmitError('');
+        setIsSubmitted(false);
+    };
+
+    // ── Success state: inline confirmation ──────────────────────────────
+    // Topmate is already open in a new tab from handleSubmit.
+    // This message replaces the form in place — no new screen, no redirect.
     if (isSubmitted) {
-        return <BookingConfirmation bookingUrl={bookingUrl} userEmail={submittedEmail} />;
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+                className="text-center py-10 px-4"
+            >
+                <h3 className="text-2xl font-bold mb-4 text-gray-900 font-serif">
+                    Thank You 🎉
+                </h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto leading-relaxed">
+                    If your booking is confirmed, a confirmation has been sent to your email and WhatsApp.
+                    We look forward to supporting your next chapter.
+                </p>
+                <button
+                    onClick={handleReset}
+                    className="text-sm text-gray-400 hover:text-gray-600 underline transition-colors"
+                >
+                    Start Over
+                </button>
+            </motion.div>
+        );
     }
 
     // Exit screens (early exit or soft exit)
@@ -510,7 +442,8 @@ export default function RebirthApplication() {
                     {/* Contact form (final step) */}
                     {step.type === 'contact-form' && (
                         <div className="space-y-4">
-                            <div className="grid md:grid-cols-2 gap-4">
+                            {/* Row 1: Name + Phone (2-col on desktop, stacked on mobile) */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input
                                     type="text"
                                     placeholder="Your name *"
@@ -519,18 +452,19 @@ export default function RebirthApplication() {
                                     className="w-full p-4 rounded-xl border-2 border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30"
                                 />
                                 <input
-                                    type="email"
-                                    placeholder="Your email *"
-                                    value={contactInfo.email}
-                                    onChange={(e) => handleContactChange('email', e.target.value)}
+                                    type="tel"
+                                    placeholder="Phone number *"
+                                    value={contactInfo.phone}
+                                    onChange={(e) => handleContactChange('phone', e.target.value)}
                                     className="w-full p-4 rounded-xl border-2 border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30"
                                 />
                             </div>
+                            {/* Row 2: Email full-width */}
                             <input
-                                type="tel"
-                                placeholder="Phone number *"
-                                value={contactInfo.phone}
-                                onChange={(e) => handleContactChange('phone', e.target.value)}
+                                type="email"
+                                placeholder="Your email *"
+                                value={contactInfo.email}
+                                onChange={(e) => handleContactChange('email', e.target.value)}
                                 className="w-full p-4 rounded-xl border-2 border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30"
                             />
 
@@ -574,21 +508,35 @@ export default function RebirthApplication() {
                             <div className="grid md:grid-cols-2 gap-4">
                                 <input
                                     type="text"
-                                    placeholder="Instagram handle"
+                                    placeholder={`Instagram handle${contactInfo.platform === 'Instagram' || contactInfo.platform === 'Both' ? ' *' : ''}`}
                                     value={contactInfo.instagram}
+                                    disabled={contactInfo.platform !== 'Instagram' && contactInfo.platform !== 'Both'}
                                     onChange={(e) => handleContactChange('instagram', e.target.value)}
-                                    className="w-full p-4 rounded-xl border-2 border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30"
+                                    className={`w-full p-4 rounded-xl border-2 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30 ${
+                                        contactInfo.platform !== 'Instagram' && contactInfo.platform !== 'Both'
+                                            ? 'border-gray-100 bg-gray-50 text-gray-300 placeholder:text-gray-300 cursor-not-allowed opacity-50 pointer-events-none'
+                                            : 'border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80'
+                                    }`}
                                 />
                                 <input
                                     type="text"
-                                    placeholder="LinkedIn profile URL"
+                                    placeholder={`LinkedIn profile URL${contactInfo.platform === 'LinkedIn' || contactInfo.platform === 'Both' ? ' *' : ''}`}
                                     value={contactInfo.linkedin}
+                                    disabled={contactInfo.platform !== 'LinkedIn' && contactInfo.platform !== 'Both'}
                                     onChange={(e) => handleContactChange('linkedin', e.target.value)}
-                                    className="w-full p-4 rounded-xl border-2 border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30"
+                                    className={`w-full p-4 rounded-xl border-2 transition-all text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-anushka-500/30 ${
+                                        contactInfo.platform !== 'LinkedIn' && contactInfo.platform !== 'Both'
+                                            ? 'border-gray-100 bg-gray-50 text-gray-300 placeholder:text-gray-300 cursor-not-allowed opacity-50 pointer-events-none'
+                                            : 'border-anushka-200 focus:border-anushka-400 bg-white/60 focus:bg-white/80'
+                                    }`}
                                 />
                             </div>
                             <p className="text-sm text-gray-500 text-center">
-                                * At least one social profile is required
+                                {contactInfo.platform === 'Both'
+                                    ? '* Both social profiles are required'
+                                    : contactInfo.platform
+                                        ? '* The selected social profile is required'
+                                        : '* Select a platform above'}
                             </p>
 
                             {/* Error message */}
