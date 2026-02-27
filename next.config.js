@@ -7,7 +7,10 @@ const publicPath = repoNameFromEnv || (process.env.NODE_ENV === 'production' ? g
 // Set NEXT_PUBLIC_STATIC_EXPORT=true when building for GitHub Pages / static hosting.
 // Leave unset (or false) for Vercel deployments — this enables serverless API routes
 // (api/topmate-webhook and api/check-booking) which require a Node.js runtime.
-const isStaticExport = process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true';
+// GITHUB_PAGES is automatically set to 'true' by actions/configure-pages in CI.
+const isStaticExport =
+  process.env.NEXT_PUBLIC_STATIC_EXPORT === 'true' ||
+  process.env.GITHUB_PAGES === 'true';
 
 const nextConfig = {
   ...(isStaticExport && { output: 'export', distDir: 'out' }),
