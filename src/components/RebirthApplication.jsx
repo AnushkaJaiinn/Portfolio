@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Send, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Send, Loader2, AlertCircle, MessageCircle } from 'lucide-react';
 
 // ── Phone normalizer ─────────────────────────────────────────────────────
 // Ensures the number is in international format (+91XXXXXXXXXX) before it

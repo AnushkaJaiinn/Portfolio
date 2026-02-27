@@ -69,7 +69,7 @@ export default function HomePage() {
                    Blend: wide left-edge gradient on image dissolves
                           the photo into the section background
             ══════════════════════════════════════════════════════════ */}
-            <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-anushka-50 via-rose-50 to-cream">
+            <section className="relative min-h-[100svh] flex items-start md:items-center overflow-hidden bg-gradient-to-br from-anushka-50 via-rose-50 to-cream">
 
                 {/* ── DESKTOP photo — right 68%, full height ─────────── */}
                 <div className="hidden md:block absolute inset-y-0 right-0 w-[68%] pointer-events-none select-none">
@@ -97,8 +97,8 @@ export default function HomePage() {
                 <div className="relative z-20 w-full">
 
                     {/* ── MOBILE layout ────────────────────────────────── */}
-                    <div className="md:hidden flex flex-col">
-                        <div className="relative w-full h-[52vh]">
+                    <div className="md:hidden flex flex-col w-full">
+                        <div className="relative w-full h-[44svh]">
                             <Image
                                 src={profileBackground}
                                 alt="Anushka Jain"
@@ -108,7 +108,7 @@ export default function HomePage() {
                                 sizes="100vw"
                                 className="object-cover object-top"
                             />
-                            <div className="absolute inset-x-0 bottom-0 h-44 pointer-events-none"
+                            <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
                                 style={{ background: 'linear-gradient(to bottom, transparent 0%, #fdf2f8 50%, #fef7f0 100%)' }} />
                             <div className="absolute inset-y-0 left-0 w-12 pointer-events-none"
                                 style={{ background: 'linear-gradient(to right, #fdf2f8, transparent)' }} />
@@ -116,7 +116,7 @@ export default function HomePage() {
                                 style={{ background: 'linear-gradient(to left, #fef7f0, transparent)' }} />
                         </div>
                         <motion.div
-                            className="-mt-16 pb-14 px-6 text-center"
+                            className="mt-4 pb-14 px-6 text-center"
                             initial={reduced ? undefined : { opacity: 0, y: 20 }}
                             animate={reduced ? undefined : { opacity: 1, y: 0 }}
                             transition={{ duration: 0.55 }}
@@ -397,7 +397,7 @@ export default function HomePage() {
                 7. APPLY FLOW — Multi-step form + Topmate embed
             ══════════════════════════════════════════════════════════ */}
             <section id="apply-section" className="py-16 md:py-24 bg-gradient-to-br from-anushka-50 via-rose-50 to-cream scroll-mt-4" ref={applyRef}>
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4">
                     {/* Apply form — qualification funnel + booking confirmation */}
                     <motion.div
                         className="max-w-2xl mx-auto"
@@ -441,7 +441,7 @@ export default function HomePage() {
                                     className="overflow-hidden"
                                 >
                                     <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-anushka-500/50 via-rose-500/30 to-anushka-600/50">
-                                        <div className="rounded-2xl bg-white/90 backdrop-blur-sm p-6 md:p-8 text-left">
+                                        <div className="rounded-2xl bg-white/90 backdrop-blur-sm p-4 md:p-6 text-left">
                                             <RebirthApplication />
                                         </div>
                                     </div>
