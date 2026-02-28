@@ -15,7 +15,9 @@ const isStaticExport =
 const nextConfig = {
   ...(isStaticExport && { output: 'export', distDir: 'out' }),
   images: {
-    unoptimized: true
+    // Disable optimization only for static exports (GitHub Pages).
+    // On Vercel, let the platform optimize images for best performance.
+    unoptimized: isStaticExport,
   },
   basePath: publicPath,
   assetPrefix: publicPath,
