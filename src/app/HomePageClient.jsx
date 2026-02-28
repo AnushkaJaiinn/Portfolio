@@ -69,7 +69,7 @@ export default function HomePage() {
                    Blend: wide left-edge gradient on image dissolves
                           the photo into the section background
             ══════════════════════════════════════════════════════════ */}
-            <section className="relative min-h-[100svh] flex items-start md:items-center overflow-hidden bg-gradient-to-br from-anushka-50 via-rose-50 to-cream">
+            <section className="relative min-h-screen flex items-start md:items-center overflow-hidden bg-gradient-to-br from-anushka-50 via-rose-50 to-cream">
 
                 {/* ── DESKTOP photo — right 68%, full height ─────────── */}
                 <div className="hidden md:block absolute inset-y-0 right-0 w-[68%] pointer-events-none select-none">
@@ -98,7 +98,7 @@ export default function HomePage() {
 
                     {/* ── MOBILE layout ────────────────────────────────── */}
                     <div className="md:hidden flex flex-col w-full">
-                        <div className="relative w-full h-[44svh]">
+                        <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
                             <Image
                                 src={profileBackground}
                                 alt="Anushka Jain"
@@ -117,8 +117,8 @@ export default function HomePage() {
                         </div>
                         <motion.div
                             className="mt-4 pb-14 px-6 text-center"
-                            initial={reduced ? undefined : { opacity: 0, y: 20 }}
-                            animate={reduced ? undefined : { opacity: 1, y: 0 }}
+                            initial={reduced ? undefined : { opacity: 0 }}
+                            animate={reduced ? undefined : { opacity: 1 }}
                             transition={{ duration: 0.55 }}
                         >
                             {/* Eyebrow */}
