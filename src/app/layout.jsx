@@ -1,5 +1,6 @@
 import './globals.css';
 import Script from 'next/script';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata = {
   title: 'Rebirth | Personal Brand Accelerator for Women',
@@ -53,6 +54,7 @@ export default function RootLayout({ children }) {
             </p>
           </div>
         </footer>
+        <SpeedInsights />
       </body>
     </html>
   );
